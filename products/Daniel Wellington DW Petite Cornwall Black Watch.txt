@@ -1,0 +1,11 @@
+Name;Daniel Wellington DW Petiti Cornwall Black Watch 28/32mm
+Price;599
+Sales;54
+Stock;139
+Category;Style & Fashion
+Description;Smart looking watch;Not an ordinary watch, but a watch that definitely makes the wearer look smart!
+Description;Elegant design, exquisite craftsmanship;Industrial-design with materials such as sapphire used for the body, making the watch more durable than ever.
+Review;user69;After I purchased this watch, I have many girlfriends than my friends :D
+Review;user420;Great watch, hit it with wall and the wall breaks! No scratch at all on my watch :O  !!!!!!!!!!
+
+Description;New watch;WATCH THIS WATCH PERFORM!

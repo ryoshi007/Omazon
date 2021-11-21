@@ -1,0 +1,13 @@
+Name;SONY Play Station 5 PS5
+Price;3588
+Sales;35
+Stock;10
+Category;Electronics
+Description;Play Like Never Before;Experience lightning fast loading, deeper immersion, and an all-new generation of incredible PlayStation games on PlayStation 5. 
+Description;Stunning Games;Marvel at incredible graphics and experience new PS5 features.
+Description;Breathtaking Immersion;Discover a deeper gaming experience with support for haptic feedback, adaptive triggers, and 3D Audio technology.
+Description;Lightning Speed;Harness the power of a custom CPU, GPU, and SSD with Integrated I/O that rewrite the rules of what a PlayStation console can do.
+Review;user299;Been waiting for months for getting this superb machine on my hands! Worth it!
+Review;user7693;F*** those bots! Omazon covers my back to get this precious baby!
+Review;user113;Better than XBox! Worth the price!
+Description;New;Latest
