@@ -172,7 +172,7 @@ public class ProductDatabase implements Database {
     @Override
     public void changeContentInFile(String file, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
-        List<String> newContent = new ArrayList<>();
+        
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
@@ -182,17 +182,15 @@ public class ProductDatabase implements Database {
             }
             
             fileReader.close();
-            for (String row : rows) {
-                if (row.equals(oldInput)) {
-                    String changedRow = row.replace(oldInput, newInput);
-                    newContent.add(changedRow);
-                } else {
-                    newContent.add(row);
+            
+            for (int i = 0; i < rows.size(); i++) {
+                if (rows.get(i).equals(oldInput)) {
+                    rows.set(i, newInput);
                 }
             }
             
             Path filePath = Paths.get(pathName);
-            Files.write(filePath, newContent, StandardCharsets.UTF_8);
+            Files.write(filePath, rows, StandardCharsets.UTF_8);
             
         } catch (IOException e) {
             System.out.println("The file cannot be edited.");
