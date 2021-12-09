@@ -14,17 +14,17 @@ public class Customer {
     public static final String TEXT_RED = "\u001B[31m";
     public static final String TEXT_GREEN = "\u001B[32m";
     
-    public Customer(String Username, String Password, String email, String address,String paymentPassword){
-        this.username = Username;
-        this.password = Password;
+    public Customer(String username, String password, String email, String address,String paymentPassword){
+        this.username = username;
+        this.password = password;
         this.email = email;
         this.address = address;
         this.paymentPassword = paymentPassword;
     }
     
-    public double addbalance(){
+    public double addBalance(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the amount to topup: ");
+        System.out.println("Enter the amount to topup: RM");
         double newBalance = scanner.nextDouble();
         double oldBalance = balance;
         this.balance += newBalance;
@@ -32,11 +32,11 @@ public class Customer {
         return oldBalance;
     }
     
-    public double getbalance(){
+    public double getBalance(){
         return this.balance;
     }
     
-    public String setusername(){
+    public String setUsername(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the new username: ");
         String newUsername = scanner.nextLine();
@@ -46,11 +46,11 @@ public class Customer {
         return oldUsername;
     }
     
-    public String getusername(){
+    public String getUsername(){
         return this.username;
     }
     
-    public String setemail(){
+    public String setEmail(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the new email: ");
         String newEmail = scanner.nextLine();
@@ -60,11 +60,11 @@ public class Customer {
         return oldEmail;
     }
     
-    public String getemail(){
+    public String getEmail(){
         return this.email;
     }
     
-    public String setpassword(){
+    public String setPassword(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the new password: ");
         String newPassword = scanner.nextLine();
@@ -74,11 +74,11 @@ public class Customer {
         return oldPassword;
     }
     
-    public String getpassword(){
+    public String getPassword(){
         return this.password;
     }
     
-    public String setaddress(){
+    public String setAddress(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the new address: ");
         String newAddress = scanner.nextLine();
@@ -88,11 +88,11 @@ public class Customer {
         return oldAddress;
     }
     
-    public String getaddress(){
+    public String getAddress(){
         return this.address;
     }
     
-    public String setpaymentPassword(){
+    public String setPaymentPassword(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the new Payment Password: ");
         String newPaymentPassword = scanner.nextLine();
