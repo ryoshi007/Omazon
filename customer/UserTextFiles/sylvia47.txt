@@ -1,0 +1,4 @@
+username;sylvia47
+email;sylvia47@gmail.com
+password;020506069876
+address;Kolej Kediaman Kinabalu University Malaya Wilayah Persekutuan, 50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur

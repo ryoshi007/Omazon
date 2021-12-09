@@ -1,0 +1,4 @@
+username;jaykim9999
+email;jaykim99@gmail.com
+password;jaykim99
+address;Kolej Kediaman Kinabalu University Malaya Wilayah Persekutuan, 50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur

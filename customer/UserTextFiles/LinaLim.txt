@@ -1,0 +1,4 @@
+username;Lina Lim
+email;linalim@gmail.com
+password;linalinalina123
+address;Kolej Kediaman Kinabalu University Malaya Wilayah Persekutuan, 50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
