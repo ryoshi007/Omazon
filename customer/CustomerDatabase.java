@@ -24,7 +24,7 @@ public class CustomerDatabase implements Database{
         for (String file : filenameList) {
             List<String> rows = new ArrayList<>();
             try {
-                String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+                String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
                      
                 BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
                 
@@ -61,12 +61,12 @@ public class CustomerDatabase implements Database{
                     }
                     
                     if (row.contains("PaymentPassword;")) {
-                        String[] PaymentPasswordRow = row.split(";");
-                        paymentpassword = PaymentPasswordRow[1];
+                        String[] paymentPasswordRow = row.split(";");
+                        paymentPassword = paymentPasswordRow[1];
                     }
                 }
 
-                Customer customer = new Customer(username, password, email, address, paymentpassword);
+                Customer customer = new Customer(username, password, email, address, paymentPassword);
                 customerList.addCustomer(customer);
                 
             } catch (FileNotFoundException e) {
@@ -81,7 +81,7 @@ public class CustomerDatabase implements Database{
     @Override
     public void addFile(List<String> contents, String name) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + name + ".txt";
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + name + ".txt";
             Path filePath = Paths.get(pathName);
             Files.write(filePath, contents, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -92,7 +92,7 @@ public class CustomerDatabase implements Database{
     @Override
     public void deleteFile(String file) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
             File deleteFile = new File(pathName);
             deleteFile.delete();
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class CustomerDatabase implements Database{
     @Override
     public List<String> returnAllFile() {
         List<String> fileList = new ArrayList<>();
-        File directory = new File("C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products");
+        File directory = new File("C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers");
         for (File file : directory.listFiles()) {
             if (FilenameUtils.getExtension(file.getName()).equals("txt")) {
                 fileList.add(file.getName());
@@ -115,7 +115,7 @@ public class CustomerDatabase implements Database{
     @Override
     public void addContentToFile(String file, String input) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
             PrintWriter outputStream = new PrintWriter(new FileOutputStream(pathName, true));
             outputStream.append("\n" + input);
             outputStream.close();
@@ -129,7 +129,7 @@ public class CustomerDatabase implements Database{
         List<String> rows = new ArrayList<>();
         
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
@@ -156,7 +156,7 @@ public class CustomerDatabase implements Database{
         List<String> rows = new ArrayList<>();
         List<String> newContent = new ArrayList<>();
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
