@@ -1,5 +1,6 @@
 package Interface;
 
+import customer.Customer;
 import productcomponenet.Review;
 import productcomponenet.Description;
 import java.util.Scanner;
@@ -11,6 +12,7 @@ import product.ProductManagement;
 
 public class ProductInterface {
     private Scanner scanner;
+    private Customer customer;
     private Product product;
     private ProductManagement productManagement;
     
@@ -19,8 +21,9 @@ public class ProductInterface {
     public static final String TEXT_YELLOW = "\u001B[32m";
     public static final String TEXT_RED = "\u001B[31m";
     
-    public ProductInterface(Scanner scanner, Product product, ProductManagement productManagement) {
+    public ProductInterface(Scanner scanner, Customer customer, Product product, ProductManagement productManagement) {
         this.scanner = scanner;
+        this.customer = customer;
         this.product = product;
         this.productManagement = productManagement;
         clearScreen();
@@ -134,17 +137,17 @@ public class ProductInterface {
     private void addReview() {
         String newReview = this.product.addNewReview();
         this.productManagement.addContentToProductFile(newReview, this.product.getName());
-        new ProductInterface(scanner, this.product, this.productManagement);   
+        new ProductInterface(scanner, customer, this.product, this.productManagement);   
     }
     
     private void addDescription() {
         String newDescription = this.product.addNewDescription();
         this.productManagement.addContentToProductFile(newDescription, this.product.getName());
-        new ProductInterface(scanner, this.product, this.productManagement);  
+        new ProductInterface(scanner, customer, this.product, this.productManagement);  
     }
     
     private void homepage() {
-        new Homepage(this.scanner);
+        new Homepage(this.scanner, customer);
     }
     
     private void changeName() {
@@ -152,11 +155,11 @@ public class ProductInterface {
         String oldInput = "Name;" + oldName;
         String newInput = "Name;" + this.product.getName();
         this.productManagement.changeDataInProductFile(oldInput, newInput, oldName);
-        new ProductInterface(scanner, this.product, this.productManagement);        
+        new ProductInterface(scanner, customer, this.product, this.productManagement);        
     }
     
     private void changePrice() {
-        Double oldPrice = this.product.setPrice();
+        double oldPrice = this.product.setPrice();
         String oldPriceInString, newPriceInString;
         if (oldPrice % 1 == 0) {
             oldPriceInString = String.format("%.0f", oldPrice);
@@ -173,7 +176,7 @@ public class ProductInterface {
         String oldInput = "Price;" + oldPriceInString;
         String newInput = "Price;" + newPriceInString;
         this.productManagement.changeDataInProductFile(oldInput, newInput, this.product.getName());
-        new ProductInterface(scanner, this.product, this.productManagement);
+        new ProductInterface(scanner, customer, this.product, this.productManagement);
     }
     
     private void changeStockAmount() {
@@ -181,7 +184,7 @@ public class ProductInterface {
         String oldInput = "Stock;" + oldStock;
         String newInput = "Stock;" + this.product.getStock();
         this.productManagement.changeDataInProductFile(oldInput, newInput, this.product.getName());
-        new ProductInterface(scanner, this.product, this.productManagement);  
+        new ProductInterface(scanner, customer, this.product, this.productManagement);  
     }
     
     private void deleteProduct() {
@@ -194,7 +197,7 @@ public class ProductInterface {
             } else {
                 System.out.println("The product will not be deleted");
                 Thread.sleep(2000);
-                new ProductInterface(scanner, this.product, this.productManagement);
+                new ProductInterface(scanner, customer, this.product, this.productManagement);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,13 +212,13 @@ public class ProductInterface {
             System.out.println((i+1) + ". " + description.get(i).getHeadline() + ": " + description.get(i).getDescription());
         }
         System.out.println();
-        System.out.print("Which description that you want to delete (1 -" + description.size() + "): ");
+        System.out.print("Which description that you want to delete (1 - " + description.size() + "): ");
         int input = scanner.nextInt();
         String deleteInput = description.get(input - 1).createDescriptionInput();
         this.product.removeDescription(input - 1);
         this.productManagement.deleteContentFromProductFile(deleteInput, this.product.getName());
         scanner.nextLine();
-        new ProductInterface(scanner, this.product, this.productManagement);
+        new ProductInterface(scanner, customer, this.product, this.productManagement);
     }
     
     private void deleteReview() {
@@ -225,13 +228,13 @@ public class ProductInterface {
             System.out.println((i+1) + ". " + reviews.get(i).getUsername() + ": " + reviews.get(i).getReview());
         }
         System.out.println();
-        System.out.print("Which review that you want to delete (1 -" + reviews.size() + "): ");
+        System.out.print("Which review that you want to delete (1 - " + reviews.size() + "): ");
         int input = scanner.nextInt();
         String deleteInput = reviews.get(input - 1).createReviewInput();
         this.product.removeReview(input - 1);
         this.productManagement.deleteContentFromProductFile(deleteInput, this.product.getName());
         scanner.nextLine();
-        new ProductInterface(scanner, this.product, this.productManagement);
+        new ProductInterface(scanner, customer, this.product, this.productManagement);
     }
     
     private void clearScreen() {
@@ -243,3 +246,4 @@ public class ProductInterface {
     }
     
 }
+
