@@ -1,8 +1,9 @@
 package Interface;
 
+import customer.Customer;
+import customer.CustomerManagement;
 import product.Product;
 import product.ProductManagement;
-import product.ProductDatabase;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -10,19 +11,22 @@ import java.util.logging.Logger;
 import product.ProductDatabase;
 import productcomponenet.Category;
 import productcomponenet.CategoryList;
-import productcomponenet.Description;
 
 public class Homepage {
     private Scanner scanner;
     private ProductManagement productManagement;
+    private CustomerManagement customerManagement;
     private ArrayList<Product> topThree;
+    private Customer customer;
     
     public static final String TEXT_YELLOW = "\u001B[32m";
     public static final String TEXT_RESET = "\u001B[0m";
         
-    public Homepage(Scanner scanner) {
+    public Homepage(Scanner scanner, Customer customer) {
         this.scanner = scanner;
+        this.customer = customer;
         this.productManagement = new ProductDatabase().loadFile();
+        this.customerManagement = new CustomerManagement();
         this.topThree = productManagement.topThreeProduct();
         clearScreen();
         start();
@@ -32,6 +36,9 @@ public class Homepage {
         System.out.println("-------------------------------------------------------------------------");
         System.out.println("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Welcome to Omazon App ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
         System.out.println("-------------------------------------------------------------------------");
+        
+        System.out.println("User: " + customer.getUsername());
+        System.out.printf("%s%.2f\n", "Current Balance: RM ", customer.getBalance());
         
         System.out.println();
         System.out.println("Best-Selling Products");
@@ -44,35 +51,38 @@ public class Homepage {
         System.out.println("B. Check balance");
         System.out.println("C. Go to cart");
         System.out.println("D. Go to category");
-        System.out.println("F. Add new product");
-        System.out.println("E. Exit app");
+        System.out.println("E. Add new product");
+        System.out.println("F. User Settings");
+        System.out.println("G. Exit app");
         
         System.out.println();
-        System.out.print("What to do next? (1-3) / (A-E): ");
+        System.out.print("What to do next? (1-3) / (A-G): ");
         String command = this.scanner.nextLine();
         System.out.println();
         operate(command);
     }
     
-    public void operate(String command) {
+    private void operate(String command) {
         if (command.equals("1")) {
-            new ProductInterface(this.scanner, this.topThree.get(0), this.productManagement);
+            new ProductInterface(this.scanner, customer, this.topThree.get(0), this.productManagement);
         } else if (command.equals("2")) {
-            new ProductInterface(this.scanner, this.topThree.get(1), this.productManagement);
+            new ProductInterface(this.scanner, customer, this.topThree.get(1), this.productManagement);
         } else if (command.equals("3")) {
-            new ProductInterface(this.scanner, this.topThree.get(2), this.productManagement);
+            new ProductInterface(this.scanner, customer, this.topThree.get(2), this.productManagement);
         } else if (command.equals("A")) {
             search();
         } else if (command.equals("D")){
             category();
         } else if (command.equals("E")) {
-            exit();
-        } else if (command.equals("F")) {
             addNewProduct();
+        } else if (command.equals("F")) {
+            userSettings();
+        } else if (command.equals("G")) {
+            exit();
         }
     }
     
-    public void search() {
+    private void search() {
         clearScreen();
         System.out.print("Please enter the word: " + TEXT_YELLOW);
         String searchItem = scanner.nextLine();
@@ -88,7 +98,7 @@ public class Homepage {
         }
     }
     
-    public void category() {
+    private void category() {
         clearScreen();
         CategoryList categoryData = new CategoryList();
         ArrayList<Category> categoryList = categoryData.getCategoryList();
@@ -105,7 +115,7 @@ public class Homepage {
         System.out.print(TEXT_RESET);
 
         if (input.equals("A")) {
-            new Homepage(this.scanner);
+            new Homepage(this.scanner, customer);
         } else {
             int index = Integer.valueOf(input) - 1;
             ArrayList<Product> categoryProduct = this.productManagement.getProductByCategory(categoryList.get(index));
@@ -113,7 +123,7 @@ public class Homepage {
         } 
     }
     
-    public void addNewProduct() {
+    private void addNewProduct() {
         clearScreen();
         System.out.println("---------------------------- New Product ------------------------------");
         System.out.print("Name: ");
@@ -155,10 +165,14 @@ public class Homepage {
             }
         }
         
-        new ProductInterface(this.scanner, newProduct, this.productManagement);
+        new ProductInterface(this.scanner, customer, newProduct, this.productManagement);
     }
     
-    public void exit() {
+    private void userSettings() {
+        new CustomerInterface(this.scanner, this.customer, this.customerManagement);
+    }
+    
+    private void exit() {
         try {
             System.out.println("Exiting the app ....");
             System.out.println("\n\n");
@@ -201,10 +215,10 @@ public class Homepage {
         System.out.print(TEXT_RESET);
 
         if (input.equals("A")) {
-            new Homepage(this.scanner);
+            new Homepage(this.scanner, customer);
         } else {
             int index = Integer.valueOf(input) - 1;
-            new ProductInterface(this.scanner, products.get(index), this.productManagement);
+            new ProductInterface(this.scanner, customer, products.get(index), this.productManagement);
         }
     }
     
