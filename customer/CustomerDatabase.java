@@ -1,4 +1,5 @@
-package CustomerInterface;
+package customer;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,14 +13,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import serviceclass.Database;
 import org.apache.commons.io.FilenameUtils;
         
 public class CustomerDatabase implements Database{
     
     @Override
-    public CustomerManagement loadFile() {
+    public CustomerList loadFile() {
         List<String> filenameList = returnAllFile();
-        CustomerManagement customerList = new CustomerManagement();
+        CustomerList customerList = new CustomerList();
         
         for (String file : filenameList) {
             List<String> rows = new ArrayList<>();
@@ -38,6 +40,7 @@ public class CustomerDatabase implements Database{
                 String email = "";
                 String address = "";
                 String paymentPassword = "";
+                double balance = 0;
                 
                 for (String row: rows) {
                     if (row.contains("Username;")) {
@@ -64,9 +67,14 @@ public class CustomerDatabase implements Database{
                         String[] paymentPasswordRow = row.split(";");
                         paymentPassword = paymentPasswordRow[1];
                     }
+                    
+                    if (row.contains("Balance;")) {
+                        String[] balanceRow = row.split(";");
+                        balance = Double.valueOf(balanceRow[1]);
+                    }
                 }
 
-                Customer customer = new Customer(username, password, email, address, paymentPassword);
+                Customer customer = new Customer(username, password, email, address, paymentPassword, balance);
                 customerList.addCustomer(customer);
                 
             } catch (FileNotFoundException e) {
@@ -165,7 +173,7 @@ public class CustomerDatabase implements Database{
             
             fileReader.close();
             for (String row : rows) {
-                if (row.equals(oldInput)) {
+                if (row.contains(oldInput)) {
                     String changedRow = row.replace(oldInput, newInput);
                     newContent.add(changedRow);
                 } else {
@@ -182,5 +190,4 @@ public class CustomerDatabase implements Database{
     }
     
 }
-
 
