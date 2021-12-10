@@ -1,5 +1,6 @@
 package product;
 
+import serviceclass.Database;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import org.apache.commons.io.FilenameUtils;
 public class ProductDatabase implements Database {
     
     @Override
+    //Load the file and create a new class based on the content in a text file
     public ProductManagement loadFile() {
         List<String> filenameList = returnAllFile();
         ProductManagement productList = new ProductManagement();
@@ -36,7 +38,6 @@ public class ProductDatabase implements Database {
                     rows.add(line);
                 }
                 fileReader.close();               
-                
                 String name = "";
                 double price = 0; 
                 int stock = 0, sales = 0;
@@ -97,6 +98,7 @@ public class ProductDatabase implements Database {
     }
     
     @Override
+    //Add a new text file to a folder
     public void addFile(List<String> contents, String name) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + name + ".txt";
@@ -108,6 +110,7 @@ public class ProductDatabase implements Database {
     }
 
     @Override
+    //Delete an existing text file from a folder
     public void deleteFile(String file) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
@@ -119,6 +122,7 @@ public class ProductDatabase implements Database {
     }
 
     @Override
+    //Return all of the files name in a folder
     public List<String> returnAllFile() {
         List<String> fileList = new ArrayList<>();
         File directory = new File("C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products");
@@ -131,6 +135,7 @@ public class ProductDatabase implements Database {
     }
     
     @Override
+    //Add additional thing to a text file
     public void addContentToFile(String file, String input) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
@@ -143,6 +148,7 @@ public class ProductDatabase implements Database {
     }
     
     @Override
+    //Delete specify item in a text file
     public void deleteContentFromFile(String file, String deleteInput) {
         List<String> rows = new ArrayList<>();
         
@@ -170,6 +176,7 @@ public class ProductDatabase implements Database {
     }
 
     @Override
+    //Change a specific item in a text file
     public void changeContentInFile(String file, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
         
@@ -184,7 +191,7 @@ public class ProductDatabase implements Database {
             fileReader.close();
             
             for (int i = 0; i < rows.size(); i++) {
-                if (rows.get(i).equals(oldInput)) {
+                if (rows.get(i).contains(oldInput)) {
                     rows.set(i, newInput);
                 }
             }
