@@ -105,6 +105,10 @@ public class CustomerInterface {
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
+    private void homepage() {
+        new Homepage(this.scanner);
+    }
+    
     private void clearScreen() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
