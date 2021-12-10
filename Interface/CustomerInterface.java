@@ -1,7 +1,8 @@
-package project;
+package Interface;
+
 import java.util.Scanner;
-import CustomerInterface.Customer;
-import CustomerInterface.CustomerManagement;
+import customer.Customer;
+import customer.CustomerManagement;
 
 public class CustomerInterface {
     private Scanner scanner;
@@ -32,8 +33,9 @@ public class CustomerInterface {
         System.out.println("4. Change Address");
         System.out.println("5. Change Payment Password");
         System.out.println("6. Top up Balance");
+        System.out.println("7. Back to Homepage");
         System.out.println("");
-        System.out.println("What to do next? (1-6)" + TEXT_GREEN);
+        System.out.print("What to do next? (1-7): " + TEXT_GREEN);
         String command = scanner.nextLine();
         System.out.println(TEXT_RESET);
         operation(command);    
@@ -59,8 +61,8 @@ public class CustomerInterface {
     
     private void changeUsername(){
         String oldUsername = this.customer.setUsername();
-        String oldInput = "Name;" + oldUsername;
-        String newInput = "Name;" + this.customer.getUsername();
+        String oldInput = "Username;" + oldUsername;
+        String newInput = "Username;" + this.customer.getUsername();
         this.customerManagement.changeDataInCustomerFile(oldInput, newInput, oldUsername);
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
@@ -91,22 +93,37 @@ public class CustomerInterface {
     
     private void changePaymentPassword(){
         String oldPaymentPassword = this.customer.setPaymentPassword();
-        String oldInput = "Payment Password;" + oldPaymentPassword;
-        String newInput = "Payment Password;" + this.customer.getPaymentPassword();
+        String oldInput = "PaymentPassword;" + oldPaymentPassword;
+        String newInput = "PaymentPassword;" + this.customer.getPaymentPassword();
         this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void topUpBalance(){
+    private void topUpBalance(){       
         double oldBalance = this.customer.addBalance();
-        String oldBalanceInString = "Balance;" + oldBalance;
-        String newBalanceInString = "Balance;" + this.customer.getBalance();
+        String oldBalanceInString, newBalanceInString;
+        if (oldBalance % 1 == 0) {
+            oldBalanceInString = String.format("%.0f", oldBalance);
+        } else {
+            oldBalanceInString = String.valueOf(oldBalance);
+        }
+        
+        if (this.customer.getBalance() % 1 == 0) {
+            newBalanceInString = String.format("%.0f", this.customer.getBalance());
+            System.out.println("");
+        } else {
+            newBalanceInString = String.valueOf(this.customer.getBalance());
+        }
+        
+        oldBalanceInString = "Balance;" + oldBalanceInString;
+        newBalanceInString = "Balance;" + newBalanceInString;
+        System.out.println(oldBalanceInString + " " + newBalanceInString);
         this.customerManagement.changeDataInCustomerFile(oldBalanceInString, newBalanceInString, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
     private void homepage() {
-        new Homepage(this.scanner);
+        new Homepage(this.scanner, this.customer);
     }
     
     private void clearScreen() {
