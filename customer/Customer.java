@@ -102,7 +102,7 @@ public class Customer {
         return oldPaymentPassword;
     }
     
-    public String getpaymentPassword(){
+    public String getPaymentPassword(){
         return this.paymentPassword;
     }
 }
