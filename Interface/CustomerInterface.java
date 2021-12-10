@@ -41,67 +41,67 @@ public class CustomerInterface {
     
     private void operation(String command){
         if (command.equals("1")){
-            ChangeUsername();
+            changeUsername();
         }else if(command.equals("2")){
-            ChangePassword();
+            changePassword();
         }else if(command.equals("3")){
-            ChangeEmail();
+            changeEmail();
         }else if(command.equals("4")){
-            ChangeAddress();
+            changeAddress();
         }else if(command.equals("5")){
-            ChangePaymentPassword();
+            changePaymentPassword();
         }else if(command.equals("6")){
-            TopupBalance();
+            topUpBalance();
         }else{
             homepage();
         }       
     }
     
-    private void ChangeUsername(){
-        String oldUsername = this.customer.setusername();
+    private void changeUsername(){
+        String oldUsername = this.customer.setUsername();
         String oldInput = "Name;" + oldUsername;
-        String newInput = "Name;" + this.customer.getusername();
-        this.customerManagement.changeDataInProductFile(oldInput, newInput, oldUsername);
+        String newInput = "Name;" + this.customer.getUsername();
+        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, oldUsername);
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void ChangePassword(){
-        String oldPassword = this.customer.setpassword();
+    private void changePassword(){
+        String oldPassword = this.customer.setPassword();
         String oldInput = "Password;" + oldPassword;
-        String newInput = "Password;" + this.customer.getpassword();
-        this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getusername());
+        String newInput = "Password;" + this.customer.getPassword();
+        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void ChangeEmail(){
-        String oldEmail = this.customer.setemail();
+    private void changeEmail(){
+        String oldEmail = this.customer.setEmail();
         String oldInput = "Email;" + oldEmail;
-        String newInput = "Email;" + this.customer.getemail();
-        this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getusername());
+        String newInput = "Email;" + this.customer.getEmail();
+        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void ChangeAddress(){
-        String oldAddress = this.customer.setaddress();
+    private void changeAddress(){
+        String oldAddress = this.customer.setAddress();
         String oldInput = "Address;" + oldAddress;
-        String newInput = "Address;" + this.customer.getaddress();
-        this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getusername());
+        String newInput = "Address;" + this.customer.getAddress();
+        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void ChangePaymentPassword(){
-        String oldPaymentPassword = this.customer.setpaymentPassword();
+    private void changePaymentPassword(){
+        String oldPaymentPassword = this.customer.setPaymentPassword();
         String oldInput = "Payment Password;" + oldPaymentPassword;
-        String newInput = "Payment Password;" + this.customer.getpaymentPassword();
-        this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getusername());
+        String newInput = "Payment Password;" + this.customer.getPaymentPassword();
+        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
-    private void TopupBalance(){
-        double oldBalance = this.customer.addbalance();
+    private void topUpBalance(){
+        double oldBalance = this.customer.addBalance();
         String oldBalanceInString = "Balance;" + oldBalance;
-        String newBalanceInString = "Balance;" + this.customer.getbalance();
-        this.customerManagement.changeDataInProductFile(oldBalanceInString, newBalanceInString, this.customer.getusername());
+        String newBalanceInString = "Balance;" + this.customer.getBalance();
+        this.customerManagement.changeDataInCustomerFile(oldBalanceInString, newBalanceInString, this.customer.getUsername());
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
