@@ -1,30 +1,14 @@
-package CustomerInterface;
-import ServiceClass.SimilarityChecker;
-import java.util.ArrayList;
+package customer;
+
+import serviceclass.SimilarityChecker;
 import java.util.List;
 
 
 public class CustomerManagement {
-    private ArrayList<Customer> customerList;
     private CustomerDatabase customerData;
     
     public CustomerManagement() {
-        this.customerList = new ArrayList<>();
         this.customerData = new CustomerDatabase();
-    }
-    
-    public void addCustomer(Customer newCustomer) {
-        this.customerList.add(newCustomer);
-    }
-    
-    public int getSize() {
-        return this.customerList.size();
-    }
-    
-    public void listName() {
-        for (Customer customer : this.customerList) {
-            System.out.println(customer.getUsername());
-        }
     }
     
     public void addContentToCustomerFile(String input, String customerUsername) {
