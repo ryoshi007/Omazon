@@ -59,7 +59,7 @@ public class CustomerManagement {
         double existingSimilarityPoint = 0;
         for (String fileName : fileList) {
             SimilarityChecker checker = new SimilarityChecker();
-            double similarity = checker.similarity(customerusername, fileName);
+            double similarity = checker.similarity(customerUsername, fileName);
             if (similarity > existingSimilarityPoint) {
                 possibleFileName = fileName;
                 existingSimilarityPoint = similarity;
