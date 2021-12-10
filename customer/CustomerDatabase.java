@@ -37,7 +37,7 @@ public class CustomerDatabase implements Database{
                 String password = "";
                 String email = "";
                 String address = "";
-                String paymentpassword = "";
+                String paymentPassword = "";
                 
                 for (String row: rows) {
                     if (row.contains("Username;")) {
