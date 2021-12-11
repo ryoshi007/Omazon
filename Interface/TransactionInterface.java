@@ -24,16 +24,22 @@ public class TransactionInterface {
     public static final String TEXT_YELLOW = "\u001B[32m";
     
     private void inputOperationInAFunction(ArrayList<Product> Transaction) {
+        Scanner scanner = new Scanner(System.in);
         clearScreen();
         System.out.println("---------------------------- Transaction ----------------------------");
         int count = 0;
         double totalPrice = 0;
+        int amount =1;
         for (Product product : products) {
             ++count;
             System.out.println("No. " + count + " - " + product.getName() + amount + product.getPrice());
-            totalPrice++;
+            System.out.print("Please enter the quantity: ");
+            amount = scanner.nextInt();
+            totalPrice+=product.getPrice()*amount;
         }
+        System.out.println();
         System.out.printf("Total Price : RM %.2f\n",totalPrice);
+        
 
         System.out.println();
         System.out.println("1. Make Payment");
