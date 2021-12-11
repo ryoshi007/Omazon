@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import serviceclass.Database;
 import org.apache.commons.io.FilenameUtils;
+import product.Product;
         
 public class CustomerDatabase implements Database{
     
@@ -41,6 +42,8 @@ public class CustomerDatabase implements Database{
                 String address = "";
                 String paymentPassword = "";
                 double balance = 0;
+                ArrayList<Product> favourite = new ArrayList<>();
+                ArrayList<Product> orderHistory = new ArrayList<>(); 
                 
                 for (String row: rows) {
                     if (row.contains("Username;")) {
