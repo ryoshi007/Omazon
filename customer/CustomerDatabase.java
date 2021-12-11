@@ -72,9 +72,23 @@ public class CustomerDatabase implements Database{
                         String[] balanceRow = row.split(";");
                         balance = Double.valueOf(balanceRow[1]);
                     }
+                    if( row.contains("favourite;")){
+                        String[] favouriteRow = row.split(";");
+                        if (favouriteRow[1].equals(product.getName())){
+                            Product product2 = product.getName();
+                            favourite.add(product2);
+                        }
+                    }
+                    if( row.contains("orderHistory;")){
+                        String[] orderHistoryRow = row.split(";");
+                        if (orderHistoryRow[1].equals(product.getName())){
+                            Product product2 = product.getName();
+                            orderHistory.add(product2);
+                        }
+                    }
                 }
 
-                Customer customer = new Customer(username, password, email, address, paymentPassword, balance);
+                Customer customer = new Customer(username, password, email, address, paymentPassword, balance, favourite, orderHistory);
                 customerList.addCustomer(customer);
                 
             } catch (FileNotFoundException e) {
