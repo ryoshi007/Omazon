@@ -51,7 +51,6 @@ public class TransactionInterface {
         System.out.print(TEXT_RESET);
 
         if (input.equals("1")) {
-            double totalPrice = this.product.getPrice()*amount;
             if (totalPrice > this.customer.getBalance()){
                 this.customer.addBalance();
             }else if(totalPrice <= this.customer.getBalance()){
