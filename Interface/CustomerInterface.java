@@ -33,9 +33,11 @@ public class CustomerInterface {
         System.out.println("4. Change Address");
         System.out.println("5. Change Payment Password");
         System.out.println("6. Top up Balance");
-        System.out.println("7. Back to Homepage");
+        System.out.println("7. Favourite Item");
+        System.out.println("8. Order History");
+        System.out.println("9. Back to Homepage");
         System.out.println("");
-        System.out.print("What to do next? (1-7): " + TEXT_GREEN);
+        System.out.print("What to do next? (1-9): " + TEXT_GREEN);
         String command = scanner.nextLine();
         System.out.println(TEXT_RESET);
         operation(command);    
@@ -54,9 +56,19 @@ public class CustomerInterface {
             changePaymentPassword();
         }else if(command.equals("6")){
             topUpBalance();
+        }else if(command.equals("7")){
+            viewFavourite();
+        }else if(command.equals("8")){
+            viewOrderHistory();
         }else{
             homepage();
         }       
+    }
+    
+    private boolean checkPassword(){
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+        return password.equals(customer.getPassword());
     }
     
     private void changeUsername(){
@@ -68,19 +80,29 @@ public class CustomerInterface {
     }
     
     private void changePassword(){
-        String oldPassword = this.customer.setPassword();
-        String oldInput = "Password;" + oldPassword;
-        String newInput = "Password;" + this.customer.getPassword();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldPassword = this.customer.setPassword();
+            String oldInput = "Password;" + oldPassword;
+            String newInput = "Password;" + this.customer.getPassword();
+            this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getUsername());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }else{
+            System.out.println(TEXT_RED + "Incorrect Password.Please try again!");
+            System.out.println(TEXT_RESET);
+        }
     }
     
     private void changeEmail(){
-        String oldEmail = this.customer.setEmail();
-        String oldInput = "Email;" + oldEmail;
-        String newInput = "Email;" + this.customer.getEmail();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldEmail = this.customer.setEmail();
+            String oldInput = "Email;" + oldEmail;
+            String newInput = "Email;" + this.customer.getEmail();
+            this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getUsername());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }else{
+            System.out.println(TEXT_RED + "Incorrect Password.Please try again!");
+            System.out.println(TEXT_RESET);
+        }    
     }
     
     private void changeAddress(){
@@ -92,33 +114,54 @@ public class CustomerInterface {
     }
     
     private void changePaymentPassword(){
-        String oldPaymentPassword = this.customer.setPaymentPassword();
-        String oldInput = "PaymentPassword;" + oldPaymentPassword;
-        String newInput = "PaymentPassword;" + this.customer.getPaymentPassword();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getUsername());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldPaymentPassword = this.customer.setPaymentPassword();
+            String oldInput = "Payment Password;" + oldPaymentPassword;
+            String newInput = "Payment Password;" + this.customer.getPaymentPassword();
+            this.customerManagement.changeDataInProductFile(oldInput, newInput, this.customer.getUsername());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }else{
+            System.out.println(TEXT_RED + "Incorrect Password.Please try again!");
+            System.out.println(TEXT_RESET);
+        }
     }
     
     private void topUpBalance(){       
-        double oldBalance = this.customer.addBalance();
-        String oldBalanceInString, newBalanceInString;
-        if (oldBalance % 1 == 0) {
-            oldBalanceInString = String.format("%.0f", oldBalance);
-        } else {
-            oldBalanceInString = String.valueOf(oldBalance);
-        }
-        
-        if (this.customer.getBalance() % 1 == 0) {
-            newBalanceInString = String.format("%.0f", this.customer.getBalance());
-            System.out.println("");
-        } else {
-            newBalanceInString = String.valueOf(this.customer.getBalance());
-        }
-        
-        oldBalanceInString = "Balance;" + oldBalanceInString;
-        newBalanceInString = "Balance;" + newBalanceInString;
-        System.out.println(oldBalanceInString + " " + newBalanceInString);
-        this.customerManagement.changeDataInCustomerFile(oldBalanceInString, newBalanceInString, this.customer.getUsername());
+        if(checkPassword()){
+            double oldBalance = this.customer.addBalance();
+            String oldBalanceInString, newBalanceInString;
+            if (oldBalance % 1 == 0) {
+                oldBalanceInString = String.format("%.0f", oldBalance);
+            } else {
+                oldBalanceInString = String.valueOf(oldBalance);
+            }
+
+            if (this.customer.getBalance() % 1 == 0) {
+                newBalanceInString = String.format("%.0f", this.customer.getBalance());
+                System.out.println("");
+            } else {
+                newBalanceInString = String.valueOf(this.customer.getBalance());
+            }
+
+            oldBalanceInString = "Balance;" + oldBalanceInString;
+            newBalanceInString = "Balance;" + newBalanceInString;
+            System.out.println(oldBalanceInString + " " + newBalanceInString);
+            this.customerManagement.changeDataInProductFile(oldBalanceInString, newBalanceInString, this.customer.getUsername());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }else{
+            System.out.println(TEXT_RED + "Incorrect Password.Please try again!");
+            System.out.println(TEXT_RESET);
+        }    
+    }
+    
+    
+    private void viewFavourite(){
+        ArrayList<Product> favourite = this.customer.getFavourite();
+        new CustomerInterface(scanner, this.customer, this.customerManagement);
+    }
+    
+    private void viewOrderHistory(){
+        ArrayList<Product> orderHistory = this.customer.getOrderHistory();
         new CustomerInterface(scanner, this.customer, this.customerManagement);
     }
     
