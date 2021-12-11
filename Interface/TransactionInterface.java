@@ -27,10 +27,13 @@ public class TransactionInterface {
         clearScreen();
         System.out.println("---------------------------- Transaction ----------------------------");
         int count = 0;
+        double totalPrice = 0;
         for (Product product : products) {
             ++count;
-            System.out.println("No. " + count + " - " + product.getName());
+            System.out.println("No. " + count + " - " + product.getName() + amount + product.getPrice());
+            totalPrice++;
         }
+        System.out.printf("Total Price : RM %.2f\n",totalPrice);
 
         System.out.println();
         System.out.println("1. Make Payment");
@@ -42,9 +45,24 @@ public class TransactionInterface {
         System.out.print(TEXT_RESET);
 
         if (input.equals("1")) {
-            double totalPrice = 
+            double totalPrice = this.product.getPrice()*amount;
+            if (totalPrice > this.customer.getBalance()){
+                this.customer.addBalance();
+            }else if(totalPrice <= this.customer.getBalance()){
+                if (checkPaymentPassword()){
+                    double oldBalance = this.customer.getBalance();
+                    double newBalance = this.customer.getBalance()-totalPrice;
+                    this.customerManagement.changeDataInProductFile(Double.toString(oldBalance),Double.toString(newBalance), this.customer.getUsername());
+                    new CustomerInterface(scanner, this.customer, this.customerManagement);
+                    System.out.println(TEXT_GREEN + "You have made payment successfully !");
+                    System.out.println(TEXT_RESET);
+                }else{
+                    System.out.println(TEXT_RED + "Incorrect Payment Password. Please try again");
+                    System.out.println(TEXT_RESET);
+                }
+            }
         }else if(input.equals("2")){
-            
+            this.customer.addBalance();
         }else {
             new Homepage(this.scanner, customer);
         }
