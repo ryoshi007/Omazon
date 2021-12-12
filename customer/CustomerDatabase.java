@@ -13,13 +13,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import serviceclass.Database;
 import org.apache.commons.io.FilenameUtils;
 import product.Product;
+import product.ProductDatabase;
         
-public class CustomerDatabase implements Database{
+public class CustomerDatabase {
     
-    @Override
     public CustomerList loadFile() {
         List<String> filenameList = returnAllFile();
         CustomerList customerList = new CustomerList();
@@ -42,8 +41,9 @@ public class CustomerDatabase implements Database{
                 String address = "";
                 String paymentPassword = "";
                 double balance = 0;
-                ArrayList<Product> favourite = new ArrayList<>();
-                ArrayList<Product> orderHistory = new ArrayList<>(); 
+                
+                ArrayList<Product> favouriteList = new ArrayList<>();
+                ArrayList<Product> orderHistory = new ArrayList<>();
                 
                 for (String row: rows) {
                     if (row.contains("Username;")) {
@@ -75,23 +75,24 @@ public class CustomerDatabase implements Database{
                         String[] balanceRow = row.split(";");
                         balance = Double.valueOf(balanceRow[1]);
                     }
-                    if( row.contains("favourite;")){
+                    
+                    if (row.contains("Favourite;")) {
                         String[] favouriteRow = row.split(";");
-                        if (favouriteRow[1].equals(product.getName())){
-                            Product product2 = product.getName();
-                            favourite.add(product2);
-                        }
+                        String favouriteProductName = favouriteRow[1];
+                        Product favouriteProduct = new ProductDatabase().returnSingleProduct(favouriteProductName);
+                        favouriteList.add(favouriteProduct);
                     }
-                    if( row.contains("orderHistory;")){
+                    
+                    if (row.contains("Order;")) {
                         String[] orderHistoryRow = row.split(";");
-                        if (orderHistoryRow[1].equals(product.getName())){
-                            Product product2 = product.getName();
-                            orderHistory.add(product2);
-                        }
+                        String purchasedProductName = orderHistoryRow[1];
+                        Product purchasedProduct = new ProductDatabase().returnSingleProduct(purchasedProductName);
+                        orderHistory.add(purchasedProduct);
                     }
+                    
                 }
 
-                Customer customer = new Customer(username, password, email, address, paymentPassword, balance, favourite, orderHistory);
+                Customer customer = new Customer(username, password, email, address, paymentPassword, balance, favouriteList, orderHistory);
                 customerList.addCustomer(customer);
                 
             } catch (FileNotFoundException e) {
@@ -103,7 +104,6 @@ public class CustomerDatabase implements Database{
         return customerList;
     }
     
-    @Override
     public void addFile(List<String> contents, String name) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + name + ".txt";
@@ -114,7 +114,6 @@ public class CustomerDatabase implements Database{
         }
     }
 
-    @Override
     public void deleteFile(String file) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
@@ -125,7 +124,6 @@ public class CustomerDatabase implements Database{
         }
     }
 
-    @Override
     public List<String> returnAllFile() {
         List<String> fileList = new ArrayList<>();
         File directory = new File("C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers");
@@ -137,7 +135,6 @@ public class CustomerDatabase implements Database{
         return fileList;
     }
     
-    @Override
     public void addContentToFile(String file, String input) {
         try {
             String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
@@ -149,7 +146,6 @@ public class CustomerDatabase implements Database{
         }
     }
     
-    @Override
     public void deleteContentFromFile(String file, String deleteInput) {
         List<String> rows = new ArrayList<>();
         
@@ -176,7 +172,6 @@ public class CustomerDatabase implements Database{
         }
     }
 
-    @Override
     public void changeContentInFile(String file, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
         List<String> newContent = new ArrayList<>();
@@ -207,4 +202,3 @@ public class CustomerDatabase implements Database{
     }
     
 }
-
