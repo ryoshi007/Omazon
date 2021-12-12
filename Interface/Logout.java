@@ -1,5 +1,5 @@
 
-package User;
+package Interface;
 
 import java.util.Scanner;
 import Interface.Homepage;
