@@ -1,6 +1,7 @@
 package Interface;
 
 import customer.Customer;
+import customer.CustomerManagement;
 import productcomponenet.Review;
 import productcomponenet.Description;
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import product.Product;
 import product.ProductManagement;
+import productcomponenet.Transaction;
 
 public class ProductInterface {
     private Scanner scanner;
@@ -123,15 +125,69 @@ public class ProductInterface {
     }
     
     private void addToFavourite() {
-        System.out.println("Nope");
+        try {
+            boolean existInFavourite = false;
+            for (Product product: this.customer.getFavouriteList()) {
+               if (product.getName().equals(product.getName())) {
+                   existInFavourite = true;
+               }
+            }
+            
+            if (!existInFavourite) {
+                this.customer.addFavourite(product);
+                CustomerManagement customerManagement = new CustomerManagement();
+                String input = "Favourite;" + product.getName();
+                customerManagement.addContentToCustomerFile(input, this.customer.getUsername());
+                System.out.println();
+                System.out.println(TEXT_GREEN + "The product is added to your favourite list!" + TEXT_RESET);
+            } else {
+                System.out.println(TEXT_RED + "The product is already in your favourite list!" + TEXT_RESET);
+            }
+            Thread.sleep(1500);
+            System.out.println("Going back to product page...");
+            new ProductInterface(scanner, customer, this.product, this.productManagement); 
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     private void addToCart() {
-        System.out.println("Nope");
+        try {
+            purchasePage();
+            System.out.println(TEXT_GREEN + "The product is added to your cart!" + TEXT_RESET);
+            System.out.println(TEXT_RED + "*Please pay the items before quitting the app*" + TEXT_RESET);
+            System.out.println("Going back to homepage ...");
+            Thread.sleep(1500);
+            scanner.nextLine();
+            new Homepage(scanner, customer);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void buyNow() {
-        System.out.println("Work in progress");
+        purchasePage();
+        new TransactionInterface(customer);
+    }
+    
+    private void purchasePage() {
+        System.out.println();
+        System.out.println("---------------------------------- Purchase -----------------------------------");
+        boolean amountSufficient = false;
+        int amount;
+        do {
+            System.out.print("Enter the amount: ");
+            amount = scanner.nextInt();
+            System.out.println();
+            if (amount > this.product.getStock()) {
+                System.out.println("The requested amount is exceed the stock! Please try again!"); 
+            } else {
+                amountSufficient = true;
+            }
+        } while (!amountSufficient);
+        Transaction newTransaction = new Transaction(this.product, amount);
+        this.customer.addTransaction(newTransaction);
     }
     
     private void addReview() {
@@ -151,7 +207,7 @@ public class ProductInterface {
     }
     
     private void changeName() {
-        String oldName = this.product.setName();
+        String oldName = this.product.changeProductName();
         String oldInput = "Name;" + oldName;
         String newInput = "Name;" + this.product.getName();
         this.productManagement.changeDataInProductFile(oldInput, newInput, oldName);
@@ -159,7 +215,7 @@ public class ProductInterface {
     }
     
     private void changePrice() {
-        double oldPrice = this.product.setPrice();
+        double oldPrice = this.product.changeProductPrice();
         String oldPriceInString, newPriceInString;
         if (oldPrice % 1 == 0) {
             oldPriceInString = String.format("%.0f", oldPrice);
@@ -180,11 +236,11 @@ public class ProductInterface {
     }
     
     private void changeStockAmount() {
-        int oldStock = this.product.setStockAmount();
+        int oldStock = this.product.changeProductStockAmount();
         String oldInput = "Stock;" + oldStock;
         String newInput = "Stock;" + this.product.getStock();
         this.productManagement.changeDataInProductFile(oldInput, newInput, this.product.getName());
-        new ProductInterface(scanner, customer, this.product, this.productManagement);  
+        new ProductInterface(scanner, customer, this.product, this.productManagement); 
     }
     
     private void deleteProduct() {
@@ -196,7 +252,8 @@ public class ProductInterface {
                 homepage();
             } else {
                 System.out.println("The product will not be deleted");
-                Thread.sleep(2000);
+                Thread.sleep(1500);
+                System.out.println("Going back to product page...");
                 new ProductInterface(scanner, customer, this.product, this.productManagement);
             }
         } catch (InterruptedException ex) {
@@ -246,4 +303,3 @@ public class ProductInterface {
     }
     
 }
-
