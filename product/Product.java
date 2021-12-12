@@ -34,6 +34,7 @@ public class Product {
         this.category = category;
     }
     
+    //Initialize new product
     public Product(String name, double price, int stock, Category category) {
         this.name = name;
         this.price = price;
@@ -98,35 +99,60 @@ public class Product {
         this.category = category;
     }
     
-    public String setName() {
+    public void setName(String newName) {
+        this.name = newName;
+    }
+    
+    public String changeProductName() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("*Please don't change the product name drastically*");
         System.out.print("Enter the new name: ");
         String newName = scanner.nextLine();
         String oldName = this.name;
-        this.name = newName;
+        setName(newName);
         System.out.println(TEXT_GREEN + "The name of the product has been changed successfully" + TEXT_RESET);
         return oldName;
     }
     
-    public Double setPrice() {
+    public void setPrice(double newPrice) {
+        this.price = newPrice;
+    }
+    
+    public Double changeProductPrice() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the new price: RM");
         double newPrice = scanner.nextDouble();
         double oldPrice = this.price; 
-        this.price = newPrice;
+        setPrice(newPrice);
         System.out.println(TEXT_GREEN + "The price of the product has been changed successfully" + TEXT_RESET);
         return oldPrice;
     }
     
-    public int setStockAmount() {
+    public void setStockAmount(int newStockAmount) {
+        this.stockCount = newStockAmount;
+    }
+    
+    public int changeProductStockAmount() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the latest stock amount available: ");
         int newStockAmount = scanner.nextInt();
+        
         int oldStockAmount = this.stockCount;
-        this.stockCount = newStockAmount;
+        setStockAmount(newStockAmount);
         System.out.println(TEXT_GREEN + "The stock amount of the product has been changed successfully" + TEXT_RESET);
         return oldStockAmount;
+    }
+    
+    public int deduceStockAmount(int amount) {
+        int oldStock = this.stockCount;
+        this.stockCount -= amount;
+        return oldStock;
+    }
+    
+    public int changeSalesAmount(int amount) {
+        int oldSales = this.salesCount;
+        this.salesCount += amount;
+        return oldSales;
     }
     
     public String addNewReview() {
@@ -166,3 +192,4 @@ public class Product {
     }
     
 }
+
