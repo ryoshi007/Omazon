@@ -23,6 +23,12 @@ public class TransactionInterface {
     public static final String TEXT_GREEN = "\u001B[32m";
     public static final String TEXT_YELLOW = "\u001B[32m";
     
+    private boolean checkPaymentPassword(){
+        System.out.print("Payment Password: ");
+        String password = scanner.nextLine();
+        return password.equals(customer.getPaymentPassword());
+    }
+    
     private void inputOperationInAFunction(ArrayList<Product> Transaction) {
         Scanner scanner = new Scanner(System.in);
         clearScreen();
