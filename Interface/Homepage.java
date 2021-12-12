@@ -53,10 +53,11 @@ public class Homepage {
         System.out.println("D. Go to category");
         System.out.println("E. Add new product");
         System.out.println("F. User Settings");
-        System.out.println("G. Exit app");
+        System.out.println("G. Go to Cart");
+        System.out.println("H. Exit app");
         
         System.out.println();
-        System.out.print("What to do next? (1-3) / (A-G): ");
+        System.out.print("What to do next? (1-3) / (A-H): ");
         String command = this.scanner.nextLine();
         System.out.println();
         operate(command);
@@ -78,6 +79,8 @@ public class Homepage {
         } else if (command.equals("F")) {
             userSettings();
         } else if (command.equals("G")) {
+            viewCart();
+        } else if (command.equals("H")) {
             exit();
         }
     }
@@ -170,6 +173,10 @@ public class Homepage {
     
     private void userSettings() {
         new CustomerInterface(this.scanner, this.customer, this.customerManagement);
+    }
+    
+    private void viewCart() {
+        new TransactionInterface(customer);
     }
     
     private void exit() {
