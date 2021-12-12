@@ -1,6 +1,5 @@
 package product;
 
-import serviceclass.Database;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,85 +18,90 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
         
-public class ProductDatabase implements Database {
+public class ProductDatabase {
     
-    @Override
     //Load the file and create a new class based on the content in a text file
     public ProductManagement loadFile() {
         List<String> filenameList = returnAllFile();
         ProductManagement productList = new ProductManagement();
         
         for (String file : filenameList) {
-            List<String> rows = new ArrayList<>();
-            try {
-                String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
-                     
-                BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
-                
-                for (String line; (line = fileReader.readLine()) != null;) {
-                    rows.add(line);
-                }
-                fileReader.close();               
-                String name = "";
-                double price = 0; 
-                int stock = 0, sales = 0;
-                Category category = null;
-                
-                for (String row: rows) {
-                    if (row.contains("Name;")) {
-                        String[] nameRow = row.split(";");
-                        name = nameRow[1];
-                    }
-                    
-                    if (row.contains("Price;")) {
-                        String[] priceRow = row.split(";");
-                        price = Double.valueOf(priceRow[1]);
-                    }
-                    
-                    if (row.contains("Sales;")) {
-                        String[] salesRow = row.split(";");
-                        sales = Integer.valueOf(salesRow[1]);
-                    }
-                    
-                    if (row.contains("Stock;")) {
-                        String[] stockRow = row.split(";");
-                        stock = Integer.valueOf(stockRow[1]);
-                    }
-                    
-                    if (row.contains("Category;")) {
-                        String[] categoryRow = row.split(";");
-                        category = new Category(categoryRow[1]);
-                    }
-                }
-
-                Product product = new Product(name, price, stock, sales, category);
-
-                for (String row: rows) {
-                    
-                    if (row.contains("Description")) {
-                        String[] descContent = row.split(";");
-                        Description description = new Description(descContent[1], descContent[2]);
-                        product.addDescription(description);
-
-                    } else if (row.contains("Review")) {
-                        String[] reviewContent = row.split(";");
-                        Review review = new Review(reviewContent[1], reviewContent[2]);
-                        product.addReviews(review);
-                    }
-                }
-                
-                productList.addProduct(product);
-                
-            } catch (FileNotFoundException e) {
-                System.out.println("File was not found");
-            } catch (IOException e) {
-                System.out.println("Error reading from file");
-            }
+            Product loadedProduct = constructProduct(file);
+            productList.addProduct(loadedProduct);
         }
         return productList;
     }
     
-    @Override
+    public Product constructProduct(String file) {
+        List<String> rows = new ArrayList<>();
+        try {
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+
+            BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
+
+            for (String line; (line = fileReader.readLine()) != null;) {
+                rows.add(line);
+            }
+            fileReader.close();               
+            String name = "";
+            double price = 0; 
+            int stock = 0, sales = 0;
+            Category category = null;
+
+            for (String row: rows) {
+                if (row.contains("Name;")) {
+                    String[] nameRow = row.split(";");
+                    name = nameRow[1];
+                }
+
+                if (row.contains("Price;")) {
+                    String[] priceRow = row.split(";");
+                    price = Double.valueOf(priceRow[1]);
+                }
+
+                if (row.contains("Sales;")) {
+                    String[] salesRow = row.split(";");
+                    sales = Integer.valueOf(salesRow[1]);
+                }
+
+                if (row.contains("Stock;")) {
+                    String[] stockRow = row.split(";");
+                    stock = Integer.valueOf(stockRow[1]);
+                }
+
+                if (row.contains("Category;")) {
+                    String[] categoryRow = row.split(";");
+                    category = new Category(categoryRow[1]);
+                }
+            }
+
+            Product product = new Product(name, price, stock, sales, category);
+
+            for (String row: rows) {
+
+                if (row.contains("Description")) {
+                    String[] descContent = row.split(";");
+                    Description description = new Description(descContent[1], descContent[2]);
+                    product.addDescription(description);
+
+                } else if (row.contains("Review")) {
+                    String[] reviewContent = row.split(";");
+                    Review review = new Review(reviewContent[1], reviewContent[2]);
+                    product.addReviews(review);
+                }
+            }
+
+            return product;
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File was not found");
+        } catch (IOException e) {
+            System.out.println("Error reading from file");
+        }
+        
+        return null;
+    }
+    
     //Add a new text file to a folder
     public void addFile(List<String> contents, String name) {
         try {
@@ -109,7 +113,6 @@ public class ProductDatabase implements Database {
         }
     }
 
-    @Override
     //Delete an existing text file from a folder
     public void deleteFile(String file) {
         try {
@@ -121,7 +124,6 @@ public class ProductDatabase implements Database {
         }
     }
 
-    @Override
     //Return all of the files name in a folder
     public List<String> returnAllFile() {
         List<String> fileList = new ArrayList<>();
@@ -134,7 +136,6 @@ public class ProductDatabase implements Database {
         return fileList;
     }
     
-    @Override
     //Add additional thing to a text file
     public void addContentToFile(String file, String input) {
         try {
@@ -147,7 +148,6 @@ public class ProductDatabase implements Database {
         }
     }
     
-    @Override
     //Delete specify item in a text file
     public void deleteContentFromFile(String file, String deleteInput) {
         List<String> rows = new ArrayList<>();
@@ -175,7 +175,6 @@ public class ProductDatabase implements Database {
         }
     }
 
-    @Override
     //Change a specific item in a text file
     public void changeContentInFile(String file, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
@@ -202,6 +201,18 @@ public class ProductDatabase implements Database {
         } catch (IOException e) {
             System.out.println("The file cannot be edited.");
         }
+    }
+    
+    public Product returnSingleProduct(String name) {
+        List<String> filenameList = returnAllFile();
+        for (String file : filenameList) {
+            Product loadedProduct = constructProduct(file);
+
+            if (loadedProduct.getName().equals(name)) {
+                return loadedProduct;
+            }
+        }
+        return null;
     }
     
 }
