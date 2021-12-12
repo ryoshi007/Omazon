@@ -1,26 +1,38 @@
 package customer;
 
 import java.util.Scanner;
+import java.util.ArrayList;
+import product.Product;
+import productcomponenet.Transaction;
 
 public class Customer {
     private String username;
     private String password;
     private String email;
-    private double balance =0;
+    private double balance;
     private String address;
     private String paymentPassword;
+    private ArrayList<Transaction> purchaseList;
+    private ArrayList<Product> favouriteList;
+    private ArrayList<Product> orderHistory;   
+    
     
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_RED = "\u001B[31m";
     public static final String TEXT_GREEN = "\u001B[32m";
     
-    public Customer(String username, String password, String email, String address,String paymentPassword, Double balance){
+    public Customer(String username, String password, String email, 
+            String address, String paymentPassword, double balance, 
+            ArrayList<Product> favouriteList, ArrayList<Product> orderHistory){
         this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
         this.paymentPassword = paymentPassword;
         this.balance = balance;
+        this.purchaseList = new ArrayList<>();
+        this.favouriteList = favouriteList;
+        this.orderHistory = orderHistory;
     }
     
     //Constructor for new user registration
@@ -31,6 +43,9 @@ public class Customer {
         this.address = address;
         this.paymentPassword = "";
         this.balance = 0;
+        this.purchaseList = new ArrayList<>();
+        this.favouriteList = new ArrayList<>();
+        this.orderHistory = new ArrayList<>();
     }
     
     public double addBalance(){
@@ -41,6 +56,10 @@ public class Customer {
         this.balance += newBalance;
         System.out.println(TEXT_GREEN + "You have topped up succesfully" + TEXT_RESET);
         return oldBalance;
+    }
+    
+    public void setBalance(double newBalance) {
+        this.balance = newBalance;
     }
     
     public double getBalance(){
@@ -115,6 +134,34 @@ public class Customer {
     
     public String getPaymentPassword(){
         return this.paymentPassword;
+    }
+    
+    public void addTransaction(Transaction newTransaction) {
+        this.purchaseList.add(newTransaction);
+    }
+    
+    public ArrayList<Transaction> getPurchaseList() {
+        return this.purchaseList;
+    }
+    
+    public void addFavourite(Product product) {
+        this.favouriteList.add(product);
+    }
+    
+    public ArrayList<Product> getFavouriteList() {
+        return this.favouriteList;
+    }
+    
+    public void addProductHistory(Product product) {
+        this.orderHistory.add(product);
+    }
+        
+    public ArrayList<Product> getOrderHistory() {
+        return this.orderHistory;
+    }
+    
+    public boolean checkPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
     
     public String toString() {
