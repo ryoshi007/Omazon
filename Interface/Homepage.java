@@ -48,13 +48,11 @@ public class Homepage {
         
         System.out.println();
         System.out.println("A. Search");
-        System.out.println("B. Check balance");
-        System.out.println("C. Go to cart");
-        System.out.println("D. Go to category");
-        System.out.println("E. Add new product");
-        System.out.println("F. User Settings");
-        System.out.println("G. Go to Cart");
-        System.out.println("H. Exit app");
+        System.out.println("B. Go to cart");
+        System.out.println("C. Go to category");
+        System.out.println("D. User Settings");
+        System.out.println("E. Manage Store");
+        System.out.println("F. Exit app");
         
         System.out.println();
         System.out.print("What to do next? (1-3) / (A-H): ");
@@ -72,15 +70,15 @@ public class Homepage {
             new ProductInterface(this.scanner, customer, this.topThree.get(2), this.productManagement);
         } else if (command.equals("A")) {
             search();
-        } else if (command.equals("D")){
-            category();
-        } else if (command.equals("E")) {
-            addNewProduct();
-        } else if (command.equals("F")) {
-            userSettings();
-        } else if (command.equals("G")) {
+        } else if (command.equals("B")) {
             viewCart();
-        } else if (command.equals("H")) {
+        } else if (command.equals("C")){
+            category();
+        } else if (command.equals("D")) {
+            userSettings();
+        }  else if (command.equals("E")) {
+            sellerStore(customer);
+        } else if (command.equals("F")) {
             exit();
         }
     }
@@ -91,13 +89,16 @@ public class Homepage {
         String searchItem = scanner.nextLine();
         System.out.print(TEXT_RESET);
 
-        ArrayList<Product> relatedProduct = this.productManagement.search(searchItem);
-        if (relatedProduct.size() == 0) {
-            System.out.println("The product with the keyword '" + searchItem + "' was not found. Please try again!");
+        ArrayList<Product> relatedProduct = this.productManagement.searchProduct(searchItem);
+        ArrayList<Customer> relatedSeller = this.customerManagement.searchSeller(searchItem);
+        if (relatedProduct.size() == 0 && relatedSeller.size() == 0) {
+            System.out.println("The product or seller with the keyword '" + searchItem + "' was not found. Please try again!");
             System.out.println();
+            System.out.println("Going back to search page...");
+            waitAWhile();
             search();
         } else {
-            inputOperationInAFunction(relatedProduct);
+            inputOperationInAFunction(relatedProduct, relatedSeller);
         }
     }
     
@@ -122,7 +123,7 @@ public class Homepage {
         } else {
             int index = Integer.valueOf(input) - 1;
             ArrayList<Product> categoryProduct = this.productManagement.getProductByCategory(categoryList.get(index));
-            inputOperationInAFunction(categoryProduct);
+            inputOperationInAFunction(categoryProduct, null);
         } 
     }
     
@@ -149,7 +150,7 @@ public class Homepage {
         System.out.print(TEXT_RESET);
         scanner.nextLine();
         Category productCategory = new Category(categoryList.get(input).getName());
-        Product newProduct = new Product(name, price, stock, productCategory);
+        Product newProduct = new Product(name, price, stock, productCategory, customer);
         this.productManagement.addNewProduct(newProduct);
         
         System.out.println();
@@ -157,13 +158,11 @@ public class Homepage {
         while (true) {
             System.out.print("Type 'E' to quit or 'Y' to add new description: ");
             String userOperate = scanner.nextLine();
-            System.out.println(userOperate);
             if (userOperate.equals("E")) {
-                System.out.println("Here");
                 break;
             } else if (userOperate.equals("Y")) {
                 String newDescription = newProduct.addNewDescription();
-                this.productManagement.addContentToProductFile(newDescription, newProduct.getName());
+                this.productManagement.addContentToProductFile(newDescription, newProduct.getID());
                 System.out.println();
             }
         }
@@ -205,7 +204,15 @@ public class Homepage {
         }
     }
     
-    private void inputOperationInAFunction(ArrayList<Product> products) {
+    private void waitAWhile() {
+       try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void inputOperationInAFunction(ArrayList<Product> products, ArrayList<Customer> sellers) {
         clearScreen();
         System.out.println("---------------------------- Search Results ----------------------------");
         int count = 0;
@@ -213,19 +220,61 @@ public class Homepage {
             ++count;
             System.out.println("No. " + count + " - " + product.getName());
         }
+        
+        if (sellers != null) {
+            for (Customer seller : sellers) {
+                ++count;
+                System.out.println("No. " + count + " - " + seller.getUsername());
+            }
+        }
 
         System.out.println();
         System.out.println("A. Back to homepage");
         System.out.println();
-        System.out.print("What to do next? (1-" + count + ") / (A): " + TEXT_YELLOW);
+        System.out.print("What to do next? (1-" + count + ") / (A/B): " + TEXT_YELLOW);
         String input = scanner.nextLine();
         System.out.print(TEXT_RESET);
 
         if (input.equals("A")) {
             new Homepage(this.scanner, customer);
         } else {
+            if (Integer.valueOf(input) > products.size()) {
+                int index = Integer.valueOf(input) - (products.size() + 1);
+                sellerStore(sellers.get(index));
+            } else {
+                int index = Integer.valueOf(input) - 1;
+                new ProductInterface(this.scanner, customer, products.get(index), this.productManagement);
+            }
+        }
+    }
+    
+    private void sellerStore(Customer seller) {
+        clearScreen();
+        System.out.println("------------------------- " + seller.getUsername() + "'s Store -------------------------");
+        int count = 0;
+        ArrayList<Product> sellerProducts = productManagement.returnSellerProduct(seller);
+        for (Product product: sellerProducts) {
+            ++count;
+            System.out.println("No. " + count + " - " + product.getName());
+        }
+        
+        System.out.println();
+        System.out.println("A. Back to homepage");
+        System.out.println("B. Add new product");
+        //Not implemented yet
+        System.out.println("C. Delete product");
+        System.out.println();
+        System.out.print("What to do next? (1-" + count + ") / (A-C): " + TEXT_YELLOW);
+        String input = scanner.nextLine();
+        System.out.print(TEXT_RESET);
+
+        if (input.equals("A")) {
+            new Homepage(this.scanner, customer);
+        } else if (input.equals("B")) {
+            addNewProduct();
+        } else {
             int index = Integer.valueOf(input) - 1;
-            new ProductInterface(this.scanner, customer, products.get(index), this.productManagement);
+            new ProductInterface(this.scanner, customer, sellerProducts.get(index), this.productManagement);
         }
     }
     
