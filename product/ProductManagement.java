@@ -1,9 +1,10 @@
 package product;
 
-import serviceclass.SimilarityChecker;
+import customer.Customer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import productcomponenet.Category;
 
 public class ProductManagement {
@@ -38,10 +39,10 @@ public class ProductManagement {
         }
     }
     
-    public ArrayList<Product> search(String searchItem) {
+    public ArrayList<Product> searchProduct(String searchItem) {
         ArrayList<Product> relatedProduct = new ArrayList<>();
         for (Product product : this.productList) {
-            if (product.getName().toLowerCase().contains(searchItem)) {
+            if (product.getName().toLowerCase().contains(searchItem.toLowerCase())) {
                 relatedProduct.add(product);
             }
         }
@@ -58,25 +59,16 @@ public class ProductManagement {
         return relatedCategory;
     }
     
-    public void addContentToProductFile(String input, String productName) {
-        String fileName = this.checkFileName(productName);
-        if (fileName != null) {
-            this.productData.addContentToFile(fileName, input);
-        }
+    public void addContentToProductFile(String input, int productID) {
+        this.productData.addContentToFile(productID, input);
     }
     
-    public void deleteContentFromProductFile(String input, String productName) {
-        String fileName = this.checkFileName(productName);
-        if (fileName != null) {
-            this.productData.deleteContentFromFile(fileName, input);
-        }
+    public void deleteContentFromProductFile(String input, int productID) {
+        this.productData.deleteContentFromFile(productID, input);
     }
     
-    public void changeDataInProductFile(String oldInput, String newInput, String productName) {
-        String fileName = this.checkFileName(productName);
-        if (fileName != null) {
-            this.productData.changeContentInFile(fileName, oldInput, newInput);
-        }
+    public void changeDataInProductFile(String oldInput, String newInput, int productID) {
+        this.productData.changeContentInFile(productID, oldInput, newInput);
     }
     
     public void addNewProduct(Product newProduct) {
@@ -94,39 +86,48 @@ public class ProductManagement {
         String sales = "Sales;" + newProduct.getSalesVolume();
         String stock = "Stock;" + newProduct.getStock();
         String category = "Category;" + newProduct.getCategory().getName();
+        String owner = "Owner;" + newProduct.getOwner().getID();
+        int id = createUniqueID();
+        String idString = "ID;" + id;
         
         contents.add(name);
         contents.add(price);
         contents.add(sales);
         contents.add(stock);
         contents.add(category);
-        this.productData.addFile(contents, newProduct.getName());
-    }
-    
-    public void deleteProduct(String productName) {
-        String fileName = this.checkFileName(productName);
-        this.productData.deleteFile(fileName);
-    }
-    
-    private String checkFileName(String productName) {
-        List<String> fileList = this.productData.returnAllFile();
-        String possibleFileName = "";
-        double existingSimilarityPoint = 0;
-        for (String fileName : fileList) {
-            SimilarityChecker checker = new SimilarityChecker();
-            double similarity = checker.similarity(productName, fileName);
-            if (similarity > existingSimilarityPoint) {
-                possibleFileName = fileName;
-                existingSimilarityPoint = similarity;
-            }           
-        }
+        contents.add(owner);
+        contents.add(idString);
         
-        if (possibleFileName.isBlank()) {
-            System.out.println("The file name cannot be found");
-            return null;
-        } else {
-            return possibleFileName;
+        this.productData.addFile(contents, id);
+    }
+    
+    public void deleteProduct(int productID) {
+        this.productData.deleteFile(productID);
+    }
+    
+    public int createUniqueID() {
+        int id = 0;
+        Random random = new Random();
+        id = random.nextInt(99999999);
+        
+        for (int i = 0; i < this.productList.size(); i++) {
+            if (productList.get(i).getID() == id) {
+                id = random.nextInt(99999999);
+                i = 0;
+            }
         }
+        return id;
+    }
+    
+    public ArrayList<Product> returnSellerProduct(Customer seller) {
+        ArrayList<Product> sellerProducts = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getOwner().getID() == seller.getID()) {
+                sellerProducts.add(product);
+            }
+        }
+        return sellerProducts;
     }
     
 }
+
