@@ -1,5 +1,6 @@
 package product;
 
+import customer.Customer;
 import productcomponenet.Review;
 import productcomponenet.Description;
 import productcomponenet.Category;
@@ -17,12 +18,14 @@ public class Product {
     private ArrayList<Description> description;
     private boolean bestSelling;
     private Category category;
+    private Customer owner;
+    private int id;
     
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_RED = "\u001B[31m";
     public static final String TEXT_GREEN = "\u001B[32m";
     
-    public Product(String name, double price, int stock, int salesCount, Category category) {
+    public Product(String name, double price, int stock, int salesCount, Category category, Customer owner, int id) {
         this.name = name;
         this.price = price;
         this.rating = "* * * * *";
@@ -32,10 +35,12 @@ public class Product {
         this.bestSelling = false;
         this.description = new ArrayList<>();
         this.category = category;
+        this.owner = owner;
+        this.id = id;
     }
     
     //Initialize new product
-    public Product(String name, double price, int stock, Category category) {
+    public Product(String name, double price, int stock, Category category, Customer owner) {
         this.name = name;
         this.price = price;
         this.rating = "";
@@ -45,6 +50,7 @@ public class Product {
         this.bestSelling = false;
         this.description = new ArrayList<>();
         this.category = category;
+        this.owner = owner;
     }
     
     public String getName() {
@@ -103,9 +109,16 @@ public class Product {
         this.name = newName;
     }
     
+    public Customer getOwner() {
+        return this.owner;
+    }
+    
+    public int getID() {
+        return this.id;
+    }
+    
     public String changeProductName() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("*Please don't change the product name drastically*");
         System.out.print("Enter the new name: ");
         String newName = scanner.nextLine();
         String oldName = this.name;
@@ -155,10 +168,8 @@ public class Product {
         return oldSales;
     }
     
-    public String addNewReview() {
+    public String addNewReview(String username) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
         System.out.print("Enter your review: ");
         String review = scanner.nextLine();
         Review newReview = new Review(username, review);
@@ -189,6 +200,26 @@ public class Product {
     public void removeDescription(int index) {
         this.description.remove(index);
         System.out.println(TEXT_GREEN + "The description has been deleted successfully." + TEXT_RESET);
+    }
+    
+    public boolean equals(Object comparedObject) {
+        if(this == comparedObject) {
+            return true;
+        }
+        
+        if(!(comparedObject instanceof Product)) {
+            return false;
+        }
+        
+        Product comparedProduct = (Product) comparedObject;
+        
+        if(this.name.equals(comparedProduct.name) && (this.price == comparedProduct.price) 
+                && (this.salesCount == comparedProduct.salesCount) 
+                && (this.stockCount == comparedProduct.stockCount 
+                && this.category.getName().equals(comparedProduct.category.getName()))) {
+            return true;
+        }
+        return false;
     }
     
 }
