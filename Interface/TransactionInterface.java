@@ -40,7 +40,6 @@ public class TransactionInterface {
     
     private void showTransaction (){
         try {
-            clearScreen();
             Scanner scanner = new Scanner(System.in);
             System.out.println("---------------------------- Transaction ----------------------------");
             int count = 0;
@@ -50,12 +49,12 @@ public class TransactionInterface {
                 double totalProductPrice = transaction.getProduct().getPrice()*transaction.getAmount();
                 totalPayAmount += totalProductPrice;
                 System.out.println("No. " + count + " - " + transaction.getProduct().getName() + 
-                        "\nAmount - " + transaction.getAmount() + "\n");
+                        "\nAmount - " + transaction.getAmount());
                 System.out.printf("%s%.2f\n", "Total Price - RM", totalProductPrice);
                 System.out.println();
             }
             System.out.println("------------------------------------------------------------------------");
-            System.out.printf("Total Price : RM %.2f\n",totalPayAmount);
+            System.out.printf("Total Payable Amount : RM %.2f\n",totalPayAmount);
 
 
             System.out.println();
@@ -79,10 +78,12 @@ public class TransactionInterface {
                         double oldBalance = this.customer.getBalance();
                         double newBalance = this.customer.getBalance() - totalPayAmount;
                         this.customer.setBalance(newBalance);
-                        this.customerManagement.changeDataInCustomerFile(convertBalanceToString(oldBalance), convertBalanceToString(newBalance), this.customer.getUsername());
+                        this.customerManagement.changeDataInCustomerFile(convertBalanceToString(oldBalance), convertBalanceToString(newBalance), this.customer.getID());
                         System.out.println(TEXT_GREEN + "You have made payment successfully!");
                         
-                        addToOrderHistory();
+                        for (Transaction transaction: purchasedProduct) {
+                            addToOrderHistory(transaction);
+                        }
                         System.out.println(TEXT_RESET);
                         new Homepage(this.scanner, customer);
                         
@@ -109,22 +110,10 @@ public class TransactionInterface {
         return "Balance;" + String.valueOf(balance);
     }
     
-    private void addToOrderHistory() {
-        boolean existInOrder = false;
-        ArrayList<Product> orderHistory = customer.getOrderHistory();
-        for(Transaction transaction: purchasedProduct) {
-            for(Product product: orderHistory) {
-                if (product.getName().equals(transaction.getProduct().getName())) {
-                    existInOrder = true;
-                }
-            }
-            
-            if (!existInOrder) {
-                customer.addProductHistory(transaction.getProduct());
-                this.customerManagement.addContentToCustomerFile(addOrderHistory(transaction.getProduct().getName()), this.customer.getUsername());
-            }          
-            changesInProductMeta(transaction);
-        }
+    private void addToOrderHistory(Transaction transaction) {       
+        customer.addProductHistory(transaction.getProduct().getName());
+        this.customerManagement.addContentToCustomerFile(addOrderHistory(transaction.getProduct().getName()), this.customer.getID());         
+        changesInProductMeta(transaction);
     }
     
     private void changesInProductMeta(Transaction transaction) {
@@ -132,18 +121,18 @@ public class TransactionInterface {
         int oldStock = currentProduct.deduceStockAmount(transaction.getAmount());
         String oldStockInput = "Stock;" + oldStock;
         String newStockInput = "Stock;" + currentProduct.getStock();
-        this.productManagement.changeDataInProductFile(oldStockInput, newStockInput, currentProduct.getName());
+        this.productManagement.changeDataInProductFile(oldStockInput, newStockInput, currentProduct.getID());
         
         int oldSales = currentProduct.changeSalesAmount(transaction.getAmount());
         String oldSalesInput = "Sales;" + oldSales;
         String newSalesInput = "Sales;" + currentProduct.getSalesVolume();
-        this.productManagement.changeDataInProductFile(oldSalesInput, newSalesInput, currentProduct.getName());
+        this.productManagement.changeDataInProductFile(oldSalesInput, newSalesInput, currentProduct.getID());
     }
     
     private void addBalance() {
         double oldBalance = this.customer.addBalance();
         double newBalance = this.customer.getBalance();
-        this.customerManagement.changeDataInCustomerFile(convertBalanceToString(oldBalance), convertBalanceToString(newBalance), this.customer.getUsername());
+        this.customerManagement.changeDataInCustomerFile(convertBalanceToString(oldBalance), convertBalanceToString(newBalance), this.customer.getID());
         new TransactionInterface(customer);
     }
     
@@ -160,3 +149,4 @@ public class TransactionInterface {
     }
     
 }
+
