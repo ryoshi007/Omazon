@@ -1,7 +1,6 @@
 package customer;
 
-import serviceclass.SimilarityChecker;
-import java.util.List;
+import java.util.ArrayList;
 
 
 public class CustomerManagement {
@@ -11,50 +10,32 @@ public class CustomerManagement {
         this.customerData = new CustomerDatabase();
     }
     
-    public void addContentToCustomerFile(String input, String customerUsername) {
-        String fileName = this.checkFileName(customerUsername);
-        if (fileName != null) {
-            this.customerData.addContentToFile(fileName, input);
-        }
+    public void addContentToCustomerFile(String input, int customerID) {
+        this.customerData.addContentToFile(customerID, input);
     }
     
-    public void deleteContentFromCustomerFile(String input, String customerUsername) {
-        String fileName = this.checkFileName(customerUsername);
-        if (fileName != null) {
-            this.customerData.deleteContentFromFile(fileName, input);
-        }
+    public void deleteContentFromCustomerFile(String input, int customerID) {
+        this.customerData.deleteContentFromFile(customerID, input);
     }
     
-    public void changeDataInCustomerFile(String oldInput, String newInput, String customerUsername) {
-        String fileName = this.checkFileName(customerUsername);
-        if (fileName != null) {
-            this.customerData.changeContentInFile(fileName, oldInput, newInput);
-        }
+    public void changeDataInCustomerFile(String oldInput, String newInput, int customerID) {
+        this.customerData.changeContentInFile(customerID, oldInput, newInput);
     }
     
-    public void deleteCustomer(String customerUsername) {
-        String fileName = this.checkFileName(customerUsername);
-        this.customerData.deleteFile(fileName);
+    public void deleteCustomer(int customerID) {
+        this.customerData.deleteFile(customerID);
     }
     
-    private String checkFileName(String customerUsername) {
-        List<String> fileList = this.customerData.returnAllFile();
-        String possibleFileName = "";
-        double existingSimilarityPoint = 0;
-        for (String fileName : fileList) {
-            SimilarityChecker checker = new SimilarityChecker();
-            double similarity = checker.similarity(customerUsername, fileName);
-            if (similarity > existingSimilarityPoint) {
-                possibleFileName = fileName;
-                existingSimilarityPoint = similarity;
-            }           
+    public ArrayList<Customer> searchSeller(String input) {
+        CustomerList customerList = customerData.loadFile();
+        ArrayList<Customer> seller = new ArrayList<>(); 
+        for (int i = 0; i < customerList.getSize(); i++) {
+            Customer customer = customerList.getCustomer(i);
+            if(customer.getUsername().toLowerCase().contains(input.toLowerCase())) {
+                seller.add(customer);
+            }
         }
-        
-        if (possibleFileName.isBlank()) {
-            System.out.println("The file name cannot be found");
-            return null;
-        } else {
-            return possibleFileName;
-        } 
+        return seller;
     }
+    
 }
