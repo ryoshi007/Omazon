@@ -9,38 +9,41 @@ public class Customer {
     private String username;
     private String password;
     private String email;
+    private int id;
     private double balance;
     private String address;
     private String paymentPassword;
     private ArrayList<Transaction> purchaseList;
     private ArrayList<Product> favouriteList;
-    private ArrayList<Product> orderHistory;   
+    private ArrayList<String> orderHistory;   
     
     
     public static final String TEXT_RESET = "\u001B[0m";
     public static final String TEXT_RED = "\u001B[31m";
     public static final String TEXT_GREEN = "\u001B[32m";
     
-    public Customer(String username, String password, String email, 
-            String address, String paymentPassword, double balance, 
-            ArrayList<Product> favouriteList, ArrayList<Product> orderHistory){
+    public Customer(String username, String password, String email, int id,
+            String address, String paymentPassword, double balance,
+            ArrayList<Product> favouriteList, ArrayList<String> orderHistory){
         this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
         this.paymentPassword = paymentPassword;
         this.balance = balance;
+        this.id = id;
         this.purchaseList = new ArrayList<>();
         this.favouriteList = favouriteList;
         this.orderHistory = orderHistory;
     }
     
-    //Constructor for new user registration
-    public Customer(String username, String password, String email, String address){
+    //Constructor for new user registration and product owner comparison
+    public Customer(String username, String password, String email, int id){
         this.username = username;
         this.password = password;
         this.email = email;
-        this.address = address;
+        this.id = id;
+        this.address = "";
         this.paymentPassword = "";
         this.balance = 0;
         this.purchaseList = new ArrayList<>();
@@ -48,6 +51,7 @@ public class Customer {
         this.orderHistory = new ArrayList<>();
     }
     
+    //Problem with initial file is missing "Balance;"
     public double addBalance(){
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the amount to topup: RM");
@@ -152,16 +156,20 @@ public class Customer {
         return this.favouriteList;
     }
     
-    public void addProductHistory(Product product) {
-        this.orderHistory.add(product);
+    public void addProductHistory(String productName) {
+        this.orderHistory.add(productName);
     }
         
-    public ArrayList<Product> getOrderHistory() {
+    public ArrayList<String> getOrderHistory() {
         return this.orderHistory;
     }
     
     public boolean checkPassword(String inputPassword) {
         return this.password.equals(inputPassword);
+    }
+    
+    public int getID() {
+        return this.id;
     }
     
     public String toString() {
