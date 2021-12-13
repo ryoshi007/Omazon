@@ -1,5 +1,7 @@
 package product;
 
+import customer.Customer;
+import customer.CustomerDatabase;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,16 +28,16 @@ public class ProductDatabase {
         ProductManagement productList = new ProductManagement();
         
         for (String file : filenameList) {
-            Product loadedProduct = constructProduct(file);
+            Product loadedProduct = constructObject(file);
             productList.addProduct(loadedProduct);
         }
         return productList;
     }
     
-    public Product constructProduct(String file) {
+    public Product constructObject (String fileID) {
         List<String> rows = new ArrayList<>();
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + fileID;
 
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
@@ -45,8 +47,9 @@ public class ProductDatabase {
             fileReader.close();               
             String name = "";
             double price = 0; 
-            int stock = 0, sales = 0;
+            int stock = 0, sales = 0, id = 0;
             Category category = null;
+            Customer owner = null;
 
             for (String row: rows) {
                 if (row.contains("Name;")) {
@@ -73,9 +76,20 @@ public class ProductDatabase {
                     String[] categoryRow = row.split(";");
                     category = new Category(categoryRow[1]);
                 }
+                
+                if (row.contains("Owner;")) {
+                    String[] ownerRow = row.split(";");
+                    int ownerID = Integer.valueOf(ownerRow[1]);
+                    owner = new CustomerDatabase().returnSingleObject(ownerID);
+                }
+                
+                if (row.contains("ID;")) {
+                    String[] idRow = row.split(";");
+                    id = Integer.valueOf(idRow[1]);
+                }
             }
 
-            Product product = new Product(name, price, stock, sales, category);
+            Product product = new Product(name, price, stock, sales, category, owner, id);
 
             for (String row: rows) {
 
@@ -103,9 +117,9 @@ public class ProductDatabase {
     }
     
     //Add a new text file to a folder
-    public void addFile(List<String> contents, String name) {
+    public void addFile(List<String> contents, int id) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + name + ".txt";
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + id + ".txt";
             Path filePath = Paths.get(pathName);
             Files.write(filePath, contents, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -114,9 +128,9 @@ public class ProductDatabase {
     }
 
     //Delete an existing text file from a folder
-    public void deleteFile(String file) {
+    public void deleteFile(int id) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + id + ".txt";
             File deleteFile = new File(pathName);
             deleteFile.delete();
         } catch (Exception e) {
@@ -137,9 +151,9 @@ public class ProductDatabase {
     }
     
     //Add additional thing to a text file
-    public void addContentToFile(String file, String input) {
+    public void addContentToFile(int id, String input) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + id + ".txt";
             PrintWriter outputStream = new PrintWriter(new FileOutputStream(pathName, true));
             outputStream.append("\n" + input);
             outputStream.close();
@@ -149,11 +163,11 @@ public class ProductDatabase {
     }
     
     //Delete specify item in a text file
-    public void deleteContentFromFile(String file, String deleteInput) {
+    public void deleteContentFromFile(int id, String deleteInput) {
         List<String> rows = new ArrayList<>();
         
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + id + ".txt";
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
@@ -176,11 +190,11 @@ public class ProductDatabase {
     }
 
     //Change a specific item in a text file
-    public void changeContentInFile(String file, String oldInput, String newInput) {
+    public void changeContentInFile(int id, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
         
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/products/" + id + ".txt";
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
@@ -203,12 +217,13 @@ public class ProductDatabase {
         }
     }
     
-    public Product returnSingleProduct(String name) {
+    //Recurssive problem with product database
+    public Product returnSingleObject(int id) {
         List<String> filenameList = returnAllFile();
         for (String file : filenameList) {
-            Product loadedProduct = constructProduct(file);
+            Product loadedProduct = constructObject(file);
 
-            if (loadedProduct.getName().equals(name)) {
+            if (loadedProduct.getID() == id) {
                 return loadedProduct;
             }
         }
@@ -216,3 +231,4 @@ public class ProductDatabase {
     }
     
 }
+
