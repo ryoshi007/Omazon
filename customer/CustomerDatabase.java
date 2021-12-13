@@ -24,89 +24,101 @@ public class CustomerDatabase {
         CustomerList customerList = new CustomerList();
         
         for (String file : filenameList) {
-            List<String> rows = new ArrayList<>();
-            try {
-                String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
-                     
-                BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
-                
-                for (String line; (line = fileReader.readLine()) != null;) {
-                    rows.add(line);
-                }
-                fileReader.close();               
-                
-                String username = "";
-                String password = "";
-                String email = "";
-                String address = "";
-                String paymentPassword = "";
-                double balance = 0;
-                
-                ArrayList<Product> favouriteList = new ArrayList<>();
-                ArrayList<Product> orderHistory = new ArrayList<>();
-                
-                for (String row: rows) {
-                    if (row.contains("Username;")) {
-                        String[] usernameRow = row.split(";");
-                        username = usernameRow[1];
-                    }
-                    
-                    if (row.contains("Password;")) {
-                        String[] passwordRow = row.split(";");
-                        password = passwordRow[1];
-                    }
-                    
-                    if (row.contains("Email;")) {
-                        String[] emailRow = row.split(";");
-                        email = emailRow[1];
-                    }
-                    
-                    if (row.contains("Address;")) {
-                        String[] addressRow = row.split(";");
-                        address = addressRow[1];
-                    }
-                    
-                    if (row.contains("PaymentPassword;")) {
-                        String[] paymentPasswordRow = row.split(";");
-                        paymentPassword = paymentPasswordRow[1];
-                    }
-                    
-                    if (row.contains("Balance;")) {
-                        String[] balanceRow = row.split(";");
-                        balance = Double.valueOf(balanceRow[1]);
-                    }
-                    
-                    if (row.contains("Favourite;")) {
-                        String[] favouriteRow = row.split(";");
-                        String favouriteProductName = favouriteRow[1];
-                        Product favouriteProduct = new ProductDatabase().returnSingleProduct(favouriteProductName);
-                        favouriteList.add(favouriteProduct);
-                    }
-                    
-                    if (row.contains("Order;")) {
-                        String[] orderHistoryRow = row.split(";");
-                        String purchasedProductName = orderHistoryRow[1];
-                        Product purchasedProduct = new ProductDatabase().returnSingleProduct(purchasedProductName);
-                        orderHistory.add(purchasedProduct);
-                    }
-                    
-                }
-
-                Customer customer = new Customer(username, password, email, address, paymentPassword, balance, favouriteList, orderHistory);
-                customerList.addCustomer(customer);
-                
-            } catch (FileNotFoundException e) {
-                System.out.println("File was not found");
-            } catch (IOException e) {
-                System.out.println("Error reading from file");
-            }
+            Customer createdCustomer = constructObject(file, true);
+            customerList.addCustomer(createdCustomer);
         }
         return customerList;
     }
     
-    public void addFile(List<String> contents, String name) {
+    public Customer constructObject(String fileID, boolean loadAllData) {
+        List<String> rows = new ArrayList<>();
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + name + ".txt";
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + fileID;
+
+            BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
+
+            for (String line; (line = fileReader.readLine()) != null;) {
+                rows.add(line);
+            }
+            fileReader.close();               
+
+            String username = "";
+            String password = "";
+            String email = "";
+            String address = "";
+            String paymentPassword = "";
+            double balance = 0;
+            int id = 0;
+
+            ArrayList<Product> favouriteList = new ArrayList<>();
+            ArrayList<String> orderHistory = new ArrayList<>();
+                
+            for (String row: rows) {
+                if (row.contains("Username;")) {
+                    String[] usernameRow = row.split(";");
+                    username = usernameRow[1];
+                }
+
+                if (row.contains("Password;")) {
+                    String[] passwordRow = row.split(";");
+                    password = passwordRow[1];
+                }
+
+                if (row.contains("Email;")) {
+                    String[] emailRow = row.split(";");
+                    email = emailRow[1];
+                }
+
+                if (row.contains("Address;")) {
+                    String[] addressRow = row.split(";");
+                    address = addressRow[1];
+                }
+
+                if (row.contains("PaymentPassword;")) {
+                    String[] paymentPasswordRow = row.split(";");
+                    paymentPassword = paymentPasswordRow[1];
+                }
+
+                if (row.contains("Balance;")) {
+                    String[] balanceRow = row.split(";");
+                    balance = Double.valueOf(balanceRow[1]);
+                }
+                
+                if (row.contains("ID;")) {
+                    String[] idRow = row.split(";");
+                    id = Integer.valueOf(idRow[1]);
+                }
+
+                if (loadAllData) {
+                    if (row.contains("Favourite;")) {
+                        String[] favouriteRow = row.split(";");
+                        int favouriteProductID = Integer.valueOf(favouriteRow[1]);
+                        Product favouriteProduct = new ProductDatabase().returnSingleObject(favouriteProductID);
+                        favouriteList.add(favouriteProduct);
+                    }
+
+                    if (row.contains("Order;")) {
+                        String[] orderHistoryRow = row.split(";");
+                        orderHistory.add(orderHistoryRow[1]);
+                    }
+                }
+
+            }
+
+            Customer customer = new Customer(username, password, email, id, address, paymentPassword, balance, favouriteList, orderHistory);
+            return customer;
+                
+        } catch (FileNotFoundException e) {
+            System.out.println("File was not found");
+        } catch (IOException e) {
+            System.out.println("Error reading from file");
+        }
+        return null;
+    }
+
+    public void addFile(List<String> contents, int id) {
+        try {
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + id + ".txt";
             Path filePath = Paths.get(pathName);
             Files.write(filePath, contents, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -114,9 +126,9 @@ public class CustomerDatabase {
         }
     }
 
-    public void deleteFile(String file) {
+    public void deleteFile(int id) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + id + ".txt";
             File deleteFile = new File(pathName);
             deleteFile.delete();
         } catch (Exception e) {
@@ -135,9 +147,9 @@ public class CustomerDatabase {
         return fileList;
     }
     
-    public void addContentToFile(String file, String input) {
+    public void addContentToFile(int id, String input) {
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + id + ".txt";
             PrintWriter outputStream = new PrintWriter(new FileOutputStream(pathName, true));
             outputStream.append("\n" + input);
             outputStream.close();
@@ -146,11 +158,11 @@ public class CustomerDatabase {
         }
     }
     
-    public void deleteContentFromFile(String file, String deleteInput) {
+    public void deleteContentFromFile(int id, String deleteInput) {
         List<String> rows = new ArrayList<>();
         
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + id + ".txt";
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
@@ -172,11 +184,11 @@ public class CustomerDatabase {
         }
     }
 
-    public void changeContentInFile(String file, String oldInput, String newInput) {
+    public void changeContentInFile(int id, String oldInput, String newInput) {
         List<String> rows = new ArrayList<>();
         List<String> newContent = new ArrayList<>();
         try {
-            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + file;
+            String pathName = "C:/Users/Freyr/Documents/NetBeansProjects/Assignment/customers/" + id + ".txt";
             BufferedReader fileReader = new BufferedReader(new FileReader(pathName));
 
             for (String line; (line = fileReader.readLine()) != null;) {
@@ -199,6 +211,18 @@ public class CustomerDatabase {
         } catch (IOException e) {
             System.out.println("The file cannot be edited.");
         }
+    }
+    
+    public Customer returnSingleObject(int id) {
+        List<String> filenameList = returnAllFile();
+        for (String file : filenameList) {
+            Customer createdCustomer = constructObject(file, false);
+
+            if (createdCustomer.getID() == id) {
+                return createdCustomer;
+            }
+        }
+        return null;
     }
     
 }
