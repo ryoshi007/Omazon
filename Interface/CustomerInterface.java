@@ -4,6 +4,7 @@ import java.util.Scanner;
 import customer.Customer;
 import customer.CustomerManagement;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import product.Product;
 import product.ProductManagement;
 
@@ -39,57 +40,93 @@ public class CustomerInterface {
         System.out.println("7. Show Order History");
         System.out.println("8. Show Favourite");
         System.out.println("9. Back to Homepage");
-        System.out.println("");
-        System.out.print("What to do next? (1-7): " + TEXT_GREEN);
-        String command = scanner.nextLine();
-        System.out.println(TEXT_RESET);
-        operation(command);    
+        System.out.println();
+        System.out.println();
+        String command = askAndCheckInput("What to do next? (1-7): ", "[1-9]{1}", false);
+        operate(command.toLowerCase());    
     }
     
-    private void operation(String command){
-        if (command.equals("1")){
+    private String askAndCheckInput(String askStatement, String checkRegex, boolean containSymbol) {
+        do {
+            System.out.print(askStatement);
+            String command = scanner.nextLine();
+            if (!containSymbol) {
+                command = command.replaceAll("[^a-zA-Z0-9]", "");
+            }
+            if (Pattern.matches(checkRegex, command)) {
+                return command;
+            } else {
+                System.out.println("Wrong input! Please try again!\n");
+            }
+        } while(true);
+    }
+    
+    private void operate(String command){
+        switch(command){
+            case "1":
             changeUsername();
-        } else if (command.equals("2")){
+            break;
+            case "2":
             changePassword();
-        } else if (command.equals("3")){
+            break;
+            case "3":
             changeEmail();
-        } else if (command.equals("4")){
+            break;
+            case "4":
             changeAddress();
-        } else if (command.equals("5")){
+            break;
+            case "5":
             changePaymentPassword();
-        } else if (command.equals("6")){
+            break;
+            case "6":
             topUpBalance();
-        } else if (command.equals("7")) {
+            break;
+            case "7":
             orderHistory();
-        } else if (command.equals("8")) {
+            break;
+            case "8":
             favouriteProduct();
-        } else {
+            break;
+            case "9":
             homepage();
+            break;
         }       
     }
     
+    private boolean checkPassword(){
+        System.out.print("Enter password: ");
+        String inputPassword = scanner.nextLine();
+        return this.customer.getPassword().equals(inputPassword);
+    }
+    
     private void changeUsername(){
-        String oldUsername = this.customer.setUsername();
-        String oldInput = "Username;" + oldUsername;
-        String newInput = "Username;" + this.customer.getUsername();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldUsername = this.customer.setUsername();
+            String oldInput = "Username;" + oldUsername;
+            String newInput = "Username;" + this.customer.getUsername();
+            this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
     }
     
     private void changePassword(){
-        String oldPassword = this.customer.setPassword();
-        String oldInput = "Password;" + oldPassword;
-        String newInput = "Password;" + this.customer.getPassword();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldPassword = this.customer.setPassword();
+            String oldInput = "Password;" + oldPassword;
+            String newInput = "Password;" + this.customer.getPassword();
+            this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
     }
     
     private void changeEmail(){
-        String oldEmail = this.customer.setEmail();
-        String oldInput = "Email;" + oldEmail;
-        String newInput = "Email;" + this.customer.getEmail();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldEmail = this.customer.setEmail();
+            String oldInput = "Email;" + oldEmail;
+            String newInput = "Email;" + this.customer.getEmail();
+            this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
     }
     
     private void changeAddress(){
@@ -101,11 +138,13 @@ public class CustomerInterface {
     }
     
     private void changePaymentPassword(){
-        String oldPaymentPassword = this.customer.setPaymentPassword();
-        String oldInput = "PaymentPassword;" + oldPaymentPassword;
-        String newInput = "PaymentPassword;" + this.customer.getPaymentPassword();
-        this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
-        new CustomerInterface(scanner, this.customer, this.customerManagement);
+        if(checkPassword()){
+            String oldPaymentPassword = this.customer.setPaymentPassword();
+            String oldInput = "PaymentPassword;" + oldPaymentPassword;
+            String newInput = "PaymentPassword;" + this.customer.getPaymentPassword();
+            this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
+            new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
     }
     
     private void topUpBalance(){
@@ -209,4 +248,3 @@ public class CustomerInterface {
         }
     }
 }
-
