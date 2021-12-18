@@ -42,7 +42,7 @@ public class CustomerInterface {
         System.out.println("9. Back to Homepage");
         System.out.println();
         System.out.println();
-        String command = askAndCheckInput("What to do next? (1-9): ", "[1-9]{1}", false);
+        String command = askAndCheckInput("What to do next? (1-9): ", "[a-iA-I1-9]{1}", false);
         operate(command.toLowerCase());    
     }
     
