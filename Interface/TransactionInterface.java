@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import product.Product;
 import product.ProductManagement;
 import productcomponenet.Transaction;
@@ -39,11 +40,16 @@ public class TransactionInterface {
     }
     
     private void showTransaction (){
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("---------------------------- Transaction ----------------------------");
+        String input = "";
+        double totalPayAmount = 0;
+        System.out.println("---------------------------- Transaction ----------------------------");
+        if (this.purchasedProduct.isEmpty()) {
+            System.out.println("You haven't add any product yet :(");
+            System.out.println("Going back to homepage...");
+            waitAWhile();
+            new Homepage(this.scanner, customer);
+        } else {
             int count = 0;
-            double totalPayAmount = 0;
             for (Transaction transaction : this.purchasedProduct) {
                 ++count;
                 double totalProductPrice = transaction.getProduct().getPrice()*transaction.getAmount();
@@ -60,13 +66,7 @@ public class TransactionInterface {
             System.out.println();
             System.out.printf("%s%.2f\n", "Current Balance: RM ", customer.getBalance());
             System.out.println();
-            System.out.println("1. Make Payment");
-            System.out.println("2. Top Up Balance");
-            System.out.println("3. Back to homepage");
-            System.out.println();
-            System.out.print("What to do next? (1-3): " + TEXT_YELLOW);
-            String input = scanner.nextLine();
-            System.out.print(TEXT_RESET);
+            input = askAndCheckInput("1. Make Payment\n2. Top Up Balance\n3. Back to homepage\n\nWhat to do next? (1-3): ", "[1-3]", false);
 
             if (input.equals("1")) {
                 if (totalPayAmount > this.customer.getBalance()){
@@ -80,17 +80,17 @@ public class TransactionInterface {
                         this.customer.setBalance(newBalance);
                         this.customerManagement.changeDataInCustomerFile(convertBalanceToString(oldBalance), convertBalanceToString(newBalance), this.customer.getID());
                         System.out.println(TEXT_GREEN + "You have made payment successfully!");
-                        
+
                         for (Transaction transaction: purchasedProduct) {
                             addToOrderHistory(transaction);
                         }
                         System.out.println(TEXT_RESET);
                         new Homepage(this.scanner, customer);
-                        
+
                     }else{
                         System.out.println(TEXT_RED + "Incorrect payment password! Please try again!");
                         System.out.println(TEXT_RESET);
-                        Thread.sleep(2000);
+                        waitAWhile();
                         new TransactionInterface(customer);
                     }
                 }
@@ -98,11 +98,9 @@ public class TransactionInterface {
                 addBalance();             
             }else {
                 System.out.println("You still can purchase the products as long as you're not quitting the app :)");
-                Thread.sleep(2000);
+                waitAWhile();
                 new Homepage(this.scanner, customer);
             }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -139,6 +137,14 @@ public class TransactionInterface {
     private String addOrderHistory(String productName) {
         return "Order;" + productName;
     }
+    
+    private void waitAWhile() {
+       try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TransactionInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
         
     private void clearScreen() {
         try {
@@ -148,5 +154,19 @@ public class TransactionInterface {
         }
     }
     
+    private String askAndCheckInput(String askStatement, String checkRegex, boolean containSymbol) {
+        do {
+            System.out.print(askStatement);
+            String command = scanner.nextLine();
+            if (!containSymbol) {
+                command = command.replaceAll("[^a-zA-Z0-9]", "");
+            }
+            if (Pattern.matches(checkRegex, command)) {
+                return command;
+            } else {
+                System.out.println("Wrong input! Please try again!\n");
+            }
+        } while(true);
+    }
+    
 }
-
