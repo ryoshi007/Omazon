@@ -1,5 +1,5 @@
 package Interface;
-
+https://github.com/ryoshi007/Omazon/blob/main/Interface/Omazon.java
 import customer.Customer;
 import customer.CustomerDatabase;
 import customer.CustomerList;
@@ -12,9 +12,10 @@ public class Omazon {
         
         //Create customer from info in text file
         CustomerList customerList = new CustomerDatabase().loadFile();
+        customerList.listName();
         System.out.print("Email: ");
         String email = scanner.nextLine();
-        Customer customer = customerList.searchCustomer(email);
+        Customer customer = customerList.verifyUser(email);
         
         
         new Homepage(scanner, customer);
