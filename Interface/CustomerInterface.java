@@ -107,6 +107,9 @@ public class CustomerInterface {
             this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
             new CustomerInterface(scanner, this.customer, this.customerManagement);
         }
+        else{
+            System.out.println("Wrong Password! Please try again!");
+        }
     }
     
     private void changePassword(){
@@ -117,6 +120,9 @@ public class CustomerInterface {
             this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
             new CustomerInterface(scanner, this.customer, this.customerManagement);
         }
+        else{
+            System.out.println("Wrong Password! Please try again!");
+        }
     }
     
     private void changeEmail(){
@@ -126,6 +132,9 @@ public class CustomerInterface {
             String newInput = "Email;" + this.customer.getEmail();
             this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
             new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
+        else{
+            System.out.println("Wrong Password! Please try again!");
         }
     }
     
@@ -144,6 +153,9 @@ public class CustomerInterface {
             String newInput = "PaymentPassword;" + this.customer.getPaymentPassword();
             this.customerManagement.changeDataInCustomerFile(oldInput, newInput, this.customer.getID());
             new CustomerInterface(scanner, this.customer, this.customerManagement);
+        }
+        else{
+            System.out.println("Wrong Password! Please try again!");
         }
     }
     
