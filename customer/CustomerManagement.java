@@ -38,4 +38,15 @@ public class CustomerManagement {
         return seller;
     }
     
+    public Customer searchSellerById(int sellerID) {
+        CustomerList customerList = customerData.loadFile();
+        for (int i = 0; i < customerList.getSize(); i++) {
+            if (customerList.getCustomer(i).getID() == sellerID) {
+                return customerList.getCustomer(i);
+            }
+        }
+        return null;
+    }
+    
 }
+
