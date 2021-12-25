@@ -129,5 +129,15 @@ public class ProductManagement {
         return sellerProducts;
     }
     
+    //Create this first in main file
+    //ProductManagement productManagement = new ProductDatabase().loadFile();
+    public Product searchProductByID(int productID) {
+        for (Product product : productList) {
+            if (product.getID() == productID) {
+                return product;
+            }
+        }
+        return null;
+    }
+    
 }
-
