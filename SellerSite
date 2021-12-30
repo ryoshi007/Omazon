@@ -6,12 +6,13 @@ import java.util.Scanner;
 import product.Product;
 import product.ProductDatabase;
 import product.ProductManagement;
+import Interface.Notification;
+import customer.CustomerManagement;
 
 public class SellerSite{
     private Customer customer;
     private Scanner scanner;
     private ProductManagement productManagement;  
-
 
     public SellerSite(Customer customer, Scanner scanner) {
         this.customer = customer;
@@ -36,6 +37,8 @@ public class SellerSite{
         int select=-1;
         select+=choose;
         listDetails(select,sellerProducts);
+        
+        
     }
    
     private void listDetails(int a,ArrayList<Product>sellerProducts){
@@ -46,14 +49,37 @@ public class SellerSite{
         System.out.println("Product : "+sellerProducts.get(a).getName() );
         System.out.println("Stock : "+ sellerProducts.get(a).getStock());
         System.out.println("Sold : "+ sellerProducts.get(a).getSalesVolume());
+        System.out.println(" ");
+        start();
 
     }
    
     private void notificationPanel(){
+        Notification newnotification= new Notification(23914201,39124051,5); 
+        System.out.println("");
         System.out.println("-------------------------------------------------------------------------");
         System.out.println("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ Notification panel ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
         System.out.println("-------------------------------------------------------------------------");    
+        System.out.println("");
         
+        
+        int customerID = newnotification.getcustomerID();
+        int productID = newnotification.getproductID();
+        int order = newnotification.getorder();
+        
+        //CustomerManagement customerManage = new CustomerManagement();
+        Customer customer =  new CustomerManagement().searchSellerById(customerID);
+      
+        
+         //ProductManagement productManagement = new ProductDatabase().loadFile();
+        Product product = this.productManagement.searchProductByID(productID);
+       
+        
+        System.out.printf("%-16s%-30s%-7s","Customer","Product", "Order" );
+        System.out.printf("\n%-16s%-30s%-7d", customer.getUsername(), product.getName(), order );
+        System.out.println(" ");
+        System.out.println(" ");
+        start();
         
         
     }
@@ -73,7 +99,7 @@ public class SellerSite{
                 Transactionlist();
                 break;
             case 2:
-                
+                notificationPanel();
                 break;
             default:
                 throw new AssertionError();
