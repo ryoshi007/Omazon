@@ -100,7 +100,43 @@ public class Database {
             ex.printStackTrace();
         }
     }
-
+    //Retrieve specific column item from database
+    public void retrieveSpecificColumn(String input2){
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
+            
+            String sql = "SELECT * FROM customer";
+            
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            
+            while(result.next()){
+                if(input2.equalsIgnoreCase("idCustomer")){
+                    System.out.println("Customer ID:" + result.getString(1));
+                }else if(input2.equalsIgnoreCase("username")){
+                    System.out.println("Username:" + result.getString(2));
+                }else if(input2.equalsIgnoreCase("email")){
+                    System.out.println("Email:" + result.getString(3));
+                }else if(input2.equalsIgnoreCase("password")){
+                    System.out.println("Password:" + result.getString(4));
+                }else if(input2.equalsIgnoreCase("address")){
+                    System.out.println("Address:" + result.getString(5));
+                }else if(input2.equalsIgnoreCase("payment password")){
+                    System.out.println("Payment Password:" + result.getString(6));
+                }else if(input2.equalsIgnoreCase("balance")){
+                    System.out.println("Balance:" + result.getString(7));
+                }else if(input2.equalsIgnoreCase("order history")){
+                    System.out.println("Order History:" + result.getString(8));
+                }else if(input2.equalsIgnoreCase("favourite history")){
+                    System.out.println("Favourite History:" + result.getString(9));
+                }
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
     //Retrieve specific item from database
     public void retrieveSpecific(String input, String input1){
         Scanner scan = new Scanner(System.in);
