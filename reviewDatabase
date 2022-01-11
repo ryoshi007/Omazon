@@ -1,0 +1,134 @@
+package database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ReviewDatabase {
+    private String jdbcURL = "jdbc:mysql://localhost:3306/productdb";
+    private String username = "root";
+    private String password = "1009@Lim";
+    
+    //Insert data to database
+    public void insert (String idproduct,String idowner, String review
+             ,double rate,String ownerreply) {
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            
+            String sql = "INSERT INTO review (idproduct,idowner, review, "
+                    + "rate, ownerreply)"
+                    + " VALUES (?,?,?,?,?)";
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,idproduct);
+            statement.setString(2,idowner);
+            statement.setString(3,review);
+            statement.setDouble(4,rate);
+            statement.setString(5,ownerreply);
+            
+            int rows = statement.executeUpdate();
+            
+            if(rows>0){
+                System.out.println("A new review has been insert succesfully");
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    //Update data in database
+    public void update (String columnName, String input, String idproduct) {
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+                
+            String sql = "UPDATE review SET "+ columnName +"='" + input +"' WHERE idproduct='" + idproduct + "'";
+           
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    //Retrieve data from review database
+    public void retrieve(String idproducts){
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
+            
+            String sql = "SELECT * FROM review WHERE idproduct ='" + idproducts + "'";
+            
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            
+            while(result.next()){
+                String idproduct = result.getString(1);
+                String idowner = result.getString(2);
+                String review = result.getString(3);
+                double rate = result.getDouble(4);
+                String ownerreply = result.getString(5);
+                System.out.println("Product ID: " + idproduct 
+                + "\nOwner ID: " + idowner + "\nReview: " + review 
+                + "\nRate: " + rate + "\nOwner Reply: " + ownerreply );
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    //Retrieve specific item from database
+    public void retrieveSpecific(String idproduct, String input){
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
+            
+            String sql = "SELECT * FROM review WHERE idproduct ='" + idproduct + "'";
+            
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            
+            while(result.next()){
+                if(input.equalsIgnoreCase("idproduct")){
+                    System.out.println("Product ID:" + result.getString(1));
+                }else if(input.equalsIgnoreCase("idowner")){
+                    System.out.println("Owner ID:" + result.getString(2));
+                }else if(input.equalsIgnoreCase("review")){
+                    System.out.println("Review:" + result.getString(3));
+                }else if(input.equalsIgnoreCase("rate")){
+                    System.out.println("Rate:" + result.getDouble(4));
+                }else if(input.equalsIgnoreCase("ownerreply")){
+                    System.out.println("Owner Reply:" + result.getString(5));
+                }
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }    
+    
+    //Delete record from review database
+    public void delete(String idproduct){
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
+            
+            String sql = "DELETE FROM review WHERE idproduct=?";
+            PreparedStatement statement2 = connection.prepareStatement(sql);
+            statement2.setString(1,idproduct);
+
+            
+            int rows = statement2.executeUpdate();
+            
+            if(rows>0){
+                System.out.println("The review has been deleted succesfully");
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+           
+    }
