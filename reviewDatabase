@@ -129,4 +129,19 @@ public class ReviewDatabase {
         }
            
     }
+    
+    public void updateNull (String columnName, String idproduct, String idowner) {
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+                
+            String sql = "UPDATE review SET "+ columnName +"=null WHERE idproduct='" + idproduct +"' AND idowner='" + idowner + "'";
+           
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 }
