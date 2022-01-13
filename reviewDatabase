@@ -41,11 +41,11 @@ public class ReviewDatabase {
     }
     
     //Update data in database
-    public void update (String columnName, String input, String idproduct) {
+   public void update (String columnName, String input, String idproduct, String idowner) {
         try{
             Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
                 
-            String sql = "UPDATE review SET "+ columnName +"='" + input +"' WHERE idproduct='" + idproduct + "'";
+            String sql = "UPDATE review SET "+ columnName +"='" + input +"' WHERE idproduct='" + idproduct +"' AND idowner='" + idowner + "'";
            
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -112,16 +112,13 @@ public class ReviewDatabase {
     }    
     
     //Delete record from review database
-    public void delete(String idproduct){
+    public void delete(String idproduct, String idowner){
         try{
             Connection connection = DriverManager.getConnection(jdbcURL,username,password);
             
-            String sql = "DELETE FROM review WHERE idproduct=?";
+            String sql = "DELETE FROM review WHERE idproduct='" + idproduct + "' AND idowner ='" + idowner + "'";
             PreparedStatement statement2 = connection.prepareStatement(sql);
-            statement2.setString(1,idproduct);
-
-            
-            int rows = statement2.executeUpdate();
+            int rows = statement2.executeUpdate(sql);
             
             if(rows>0){
                 System.out.println("The review has been deleted succesfully");
@@ -132,3 +129,4 @@ public class ReviewDatabase {
         }
            
     }
+}
