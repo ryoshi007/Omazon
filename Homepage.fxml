@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="omazon.HomepageController">
+   <children>
+      <AnchorPane layoutX="-1.0" prefHeight="56.0" prefWidth="806.0" style="-fx-background-color: #ffa500;">
+         <children>
+            <Pane fx:id="favourite" layoutX="283.0" layoutY="13.0" onMouseClicked="#goToFavourite" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label layoutX="6.0" layoutY="4.0" style="-fx-cursor: hand;" text="Favourite" textAlignment="CENTER" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="cart" layoutX="464.0" layoutY="13.0" onMouseClicked="#goToCart" prefHeight="30.0" prefWidth="61.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Cart" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="LogOut" layoutX="705.0" layoutY="13.0" onMouseClicked="#goToLoginPage" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label graphicTextGap="2.0" layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Log Out" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <MenuButton fx:id="categorySelector" layoutX="8.0" layoutY="12.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Categories" textFill="#1f055b">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Electronics" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Groceries" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Home &amp; Kitchen" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Style &amp; Fashion" />
+                <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Art &amp; Book" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Others" />
+              </items>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </MenuButton>
+            <Pane fx:id="Settings" layoutX="608.0" layoutY="13.0" onMouseClicked="#goToSettingsPage" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Settings" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="history" layoutX="377.0" layoutY="13.0" onMouseClicked="#goToHistory" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="History" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="homepage" layoutX="179.0" layoutY="11.0" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+               <children>
+                  <Label layoutX="-2.0" layoutY="6.0" onMouseClicked="#goToHomepage" style="-fx-cursor: hand;" text="Homepage" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="store" layoutX="535.0" layoutY="13.0" onMouseClicked="#goToStore" prefHeight="30.0" prefWidth="61.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Store" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="searchField" layoutX="120.0" layoutY="78.0" prefHeight="37.0" prefWidth="446.0" promptText="Product Name / Seller's Name">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="searchButton" layoutX="590.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#search" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #24a0ed; -fx-cursor: hand;" text="Search" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="262.0" layoutY="154.0" text="POPULAR NOW!">
+         <font>
+            <Font name="Franklin Gothic Demi" size="40.0" />
+         </font>
+      </Label>
+      <BorderPane fx:id="borderPane1" layoutX="26.0" layoutY="243.0" prefHeight="245.0" prefWidth="236.0" style="-fx-border-color: #000000; -fx-cursor: hand;">
+         <center>
+            <ImageView fx:id="bestSeller1" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@pictures/iphone%2013%20pro%20max.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="borderPane2" layoutX="284.0" layoutY="243.0" prefHeight="245.0" prefWidth="236.0" style="-fx-border-color: #000000; -fx-cursor: hand;">
+         <center>
+            <ImageView fx:id="bestSeller2" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@pictures/iphone%2013%20pro%20max.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="borderPane3" layoutX="542.0" layoutY="243.0" prefHeight="245.0" prefWidth="236.0" style="-fx-border-color: #000000; -fx-cursor: hand;">
+         <center>
+            <ImageView fx:id="bestSeller3" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@pictures/iphone%2013%20pro%20max.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+      <TextFlow layoutX="26.0" layoutY="506.0" prefHeight="70.0" prefWidth="236.0" textAlignment="CENTER">
+         <children>
+            <Text fx:id="bestSellerName1" strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 13 Pro Max" wrappingWidth="357.7499084472656">
+               <font>
+                  <Font name="Dubai Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </TextFlow>
+      <TextFlow layoutX="285.0" layoutY="506.0" prefHeight="70.0" prefWidth="236.0" textAlignment="CENTER">
+         <children>
+            <Text fx:id="bestSellerName2" strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 13 Pro Max" wrappingWidth="357.7499084472656">
+               <font>
+                  <Font name="Dubai Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </TextFlow>
+      <TextFlow layoutX="542.0" layoutY="506.0" prefHeight="70.0" prefWidth="236.0" textAlignment="CENTER">
+         <children>
+            <Text fx:id="bestSellerName3" strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 13 Pro Max" wrappingWidth="357.7499084472656">
+               <font>
+                  <Font name="Dubai Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </TextFlow>
+      <Circle fill="RED" layoutX="38.0" layoutY="236.0" radius="24.0" stroke="RED" strokeType="INSIDE" />
+      <Text fill="WHITE" layoutX="29.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Text>
+      <Circle fill="#ffc300" layoutX="554.0" layoutY="239.0" radius="24.0" stroke="#ffc300" strokeType="INSIDE" />
+      <Text fill="WHITE" layoutX="545.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Text>
+      <Circle fill="#002fff" layoutX="298.0" layoutY="242.0" radius="24.0" stroke="#002fff" strokeType="INSIDE" />
+      <Text fill="WHITE" layoutX="288.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="30.0" />
+         </font>
+      </Text>
+      <Button fx:id="balanceButton" layoutX="697.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#goToBalance" prefHeight="38.0" prefWidth="86.0" style="-fx-background-color: #32b94d; -fx-cursor: hand;" text="Balance" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

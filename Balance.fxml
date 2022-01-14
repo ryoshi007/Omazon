@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="omazon.BalanceController">
+   <children>
+      <StackPane fx:id="paymentPane" layoutX="92.0" layoutY="244.0" prefHeight="274.0" prefWidth="616.0">
+         <children>
+            <Pane fx:id="onlineBankPane" prefHeight="200.0" prefWidth="200.0" style="visibility: false;">
+               <children>
+                  <Label layoutX="22.0" layoutY="118.0" text="Amount (RM)" textFill="#f2ab3a">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <MenuButton fx:id="bankOption" layoutX="22.0" layoutY="54.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Bank">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#selectBank" text="Maybank" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectBank" text="CIMB" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectBank" text="Hong Leong Bank" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectBank" text="Public Bank" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectBank" text="Bank Islam" />
+                     </items>
+                  </MenuButton>
+                  <Label layoutX="22.0" layoutY="21.0" text="Select Bank" textFill="#b91c14">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="bankAmountField" layoutX="22.0" layoutY="156.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="ewalletPane" prefHeight="200.0" prefWidth="200.0" style="visibility: false;">
+               <children>
+                  <MenuButton fx:id="eWalletOption" layoutX="22.0" layoutY="54.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="E-wallet">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#selectEWallet" text="TNG eWallet" />
+                      <MenuItem mnemonicParsing="false" onAction="#selectEWallet" text="GrabPay" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectEWallet" text="Boost" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectEWallet" text="WeChat Pay" />
+                        <MenuItem mnemonicParsing="false" onAction="#selectEWallet" text="AliPay" />
+                    </items>
+                  </MenuButton>
+                  <Label layoutX="22.0" layoutY="21.0" text="Select E-wallet" textFill="#b91c14">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="22.0" layoutY="118.0" text="Amount (RM)" textFill="#f2ab3a">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="eWalletAmountField" layoutX="22.0" layoutY="156.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="cardPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="308.0" layoutY="103.0" text="CCV Code" textFill="#ffbf2a">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="ccvCodeField" layoutX="309.0" layoutY="134.0" prefHeight="26.0" prefWidth="150.0" />
+                  <TextField fx:id="cardAmountField" layoutX="24.0" layoutY="218.0" />
+                  <Label layoutX="24.0" layoutY="187.0" text="Amount (RM)" textFill="#342cb8">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="validDateField" layoutX="22.0" layoutY="134.0" prefHeight="26.0" prefWidth="150.0" />
+                  <Label layoutX="22.0" layoutY="103.0" text="Valid Date" textFill="#2cb886">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameField" layoutX="309.0" layoutY="52.0" prefHeight="26.0" prefWidth="240.0" />
+                  <Label layoutX="309.0" layoutY="21.0" text="Full Name" textFill="#3cabf0">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="22.0" layoutY="21.0" text="Card Number" textFill="#f03a62">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="cardNumberField" layoutX="22.0" layoutY="52.0" prefHeight="26.0" prefWidth="240.0" />
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="ORANGE" height="600.0" stroke="ORANGE" strokeType="INSIDE" width="60.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="ORANGE" height="600.0" layoutX="740.0" stroke="ORANGE" strokeType="INSIDE" width="60.0" />
+      <Label fx:id="walletLabel" layoutX="94.0" layoutY="33.0" text="Payment Data">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="20.0" />
+         </font>
+      </Label>
+      <Line endX="516.199951171875" endY="-1.52587890625E-5" layoutX="197.0" layoutY="194.0" startX="-100.0" stroke="#e7e1e1" />
+      <Label fx:id="chooseText" layoutX="96.0" layoutY="210.0" text="Choose top-up method" textFill="#64459e">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Line endX="514.5999755859375" endY="-1.52587890625E-5" layoutX="195.0" layoutY="134.0" startX="-100.0" stroke="#e7e1e1" />
+      <Label fx:id="priceLabel" layoutX="94.0" layoutY="68.0" text="Price" textFill="#a99696">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="price" layoutX="94.0" layoutY="91.0" text="RM 20000" textFill="#6adf26">
+         <font>
+            <Font name="Arial Bold" size="19.0" />
+         </font>
+      </Label>
+      <Button fx:id="proceedButton" layoutX="454.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#proceedPayment" style="-fx-background-color: #03c04a; -fx-cursor: hand;" text="PROCEED" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="backButton" layoutX="275.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#backButton" prefHeight="33.0" prefWidth="108.0" style="-fx-background-color: #212aa5; -fx-cursor: hand;" text="BACK" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Button>
+      <Label layoutX="94.0" layoutY="151.0" text="OmaPay's Balance" textFill="#3933b9">
+         <font>
+            <Font name="Arial Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="balance" layoutX="287.0" layoutY="151.0" text="RM 20000" textFill="#206e48">
+         <font>
+            <Font name="Arial Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="warningText" layoutX="96.0" layoutY="173.0" text="Insufficient Balance! Please top up at least RM " textFill="RED" />
+      <RadioButton fx:id="eWalletButton" layoutX="299.0" layoutY="204.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="E-Wallet">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="onlineBankButton" layoutX="400.0" layoutY="204.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Online-Banking">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="cardButton" layoutX="552.0" layoutY="204.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Debit / Credit Card">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </RadioButton>
+      <Label fx:id="invalidLabel" layoutX="254.0" layoutY="509.0" style="visibility: false;" text="Please fill up all information and make sure no mistake!" textFill="RED" />
+   </children>
+</AnchorPane>

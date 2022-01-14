@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="omazon.NotificationController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="ORANGE" height="600.0" stroke="ORANGE" strokeType="INSIDE" width="60.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="ORANGE" height="600.0" layoutX="740.0" stroke="ORANGE" strokeType="INSIDE" width="60.0" />
+      <Label fx:id="backButton" layoutX="83.0" layoutY="22.0" onMouseClicked="#goBack" style="-fx-cursor: hand;" text="&lt; BACK" textFill="#1f055b">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <Text layoutX="338.0" layoutY="80.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Notification">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="22.0" />
+         </font>
+      </Text>
+      <ScrollPane layoutX="115.0" layoutY="110.0" prefHeight="449.0" prefWidth="571.0">
+         <content>
+            <FlowPane fx:id="notificationPane" prefHeight="446.0" prefWidth="568.0" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

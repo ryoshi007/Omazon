@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="omazon.FavouriteController">
+   <children>
+      <AnchorPane layoutX="-1.0" prefHeight="56.0" prefWidth="806.0" style="-fx-background-color: #ffa500;">
+         <children>
+            <Pane fx:id="favourite" layoutX="283.0" layoutY="13.0" onMouseClicked="#goToFavourite" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label layoutX="6.0" layoutY="4.0" style="-fx-cursor: hand;" text="Favourite" textAlignment="CENTER" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="cart" layoutX="464.0" layoutY="13.0" onMouseClicked="#goToCart" prefHeight="30.0" prefWidth="61.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Cart" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="LogOut" layoutX="705.0" layoutY="13.0" onMouseClicked="#goToLoginPage" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label graphicTextGap="2.0" layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Log Out" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <MenuButton fx:id="categorySelector" layoutX="8.0" layoutY="12.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Categories" textFill="#1f055b">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Electronics" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Groceries" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Home &amp; Kitchen" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Style &amp; Fashion" />
+                <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Art &amp; Book" />
+                  <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Others" />
+              </items>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </MenuButton>
+            <Pane fx:id="Settings" layoutX="608.0" layoutY="13.0" onMouseClicked="#goToSettingsPage" prefHeight="30.0" prefWidth="86.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Settings" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="history" layoutX="377.0" layoutY="13.0" onMouseClicked="#goToHistory" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="History" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="homepage" layoutX="179.0" layoutY="11.0" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+               <children>
+                  <Label layoutX="-2.0" layoutY="6.0" onMouseClicked="#goToHomepage" style="-fx-cursor: hand;" text="Homepage" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="store" layoutX="535.0" layoutY="13.0" onMouseClicked="#goToStore" prefHeight="30.0" prefWidth="61.0">
+               <children>
+                  <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Store" textFill="#1f055b">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <ScrollPane layoutY="113.0" prefHeight="493.0" prefWidth="799.0">
+         <content>
+            <FlowPane fx:id="container" prefHeight="489.0" prefWidth="796.0" />
+         </content>
+      </ScrollPane>
+      <Label fx:id="pageTitle" layoutX="345.0" layoutY="67.0" text="Favourite" textFill="#f42c38">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

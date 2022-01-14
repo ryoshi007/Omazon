@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="omazon.AddProductController">
+    <children>
+        <AnchorPane layoutX="-1.0" prefHeight="56.0" prefWidth="806.0" style="-fx-background-color: #ffa500;">
+             <children>
+                <Pane fx:id="favourite" layoutX="283.0" layoutY="13.0" onMouseClicked="#goToFavourite" prefHeight="30.0" prefWidth="86.0">
+                   <children>
+                      <Label layoutX="6.0" layoutY="4.0" style="-fx-cursor: hand;" text="Favourite" textAlignment="CENTER" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <Pane fx:id="cart" layoutX="464.0" layoutY="13.0" onMouseClicked="#goToCart" prefHeight="30.0" prefWidth="61.0">
+                   <children>
+                      <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Cart" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <Pane fx:id="LogOut" layoutX="705.0" layoutY="13.0" onMouseClicked="#goToLoginPage" prefHeight="30.0" prefWidth="86.0">
+                   <children>
+                      <Label graphicTextGap="2.0" layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Log Out" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <MenuButton fx:id="categorySelector" layoutX="8.0" layoutY="12.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Categories" textFill="#1f055b">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Electronics" />
+                      <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Groceries" />
+                      <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Home &amp; Kitchen" />
+                      <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Style &amp; Fashion" />
+                    <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Art &amp; Book" />
+                      <MenuItem mnemonicParsing="false" onAction="#selectCategory" text="Others" />
+                  </items>
+                   <font>
+                      <Font name="Arial Rounded MT Bold" size="16.0" />
+                   </font>
+                </MenuButton>
+                <Pane fx:id="Settings" layoutX="608.0" layoutY="13.0" onMouseClicked="#goToSettingsPage" prefHeight="30.0" prefWidth="86.0">
+                   <children>
+                      <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Settings" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <Pane fx:id="history" layoutX="377.0" layoutY="13.0" onMouseClicked="#goToHistory" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+                   <children>
+                      <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="History" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <Pane fx:id="homepage" layoutX="179.0" layoutY="11.0" prefHeight="30.0" prefWidth="86.0" style="-fx-cursor: hand;">
+                   <children>
+                      <Label layoutX="-2.0" layoutY="6.0" onMouseClicked="#goToHomepage" style="-fx-cursor: hand;" text="Homepage" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+                <Pane fx:id="store" layoutX="535.0" layoutY="13.0" onMouseClicked="#goToStore" prefHeight="30.0" prefWidth="61.0">
+                   <children>
+                      <Label layoutX="12.0" layoutY="4.0" style="-fx-cursor: hand;" text="Store" textFill="#1f055b">
+                         <font>
+                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                         </font>
+                      </Label>
+                   </children>
+                </Pane>
+             </children>
+          </AnchorPane>
+      <TextArea fx:id="descriptionField" layoutX="344.0" layoutY="322.0" prefHeight="130.0" prefWidth="400.0" promptText="Description">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </TextArea>
+      <Label layoutX="344.0" layoutY="175.0" text="RM">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="uploadButton" layoutX="100.0" layoutY="377.0" mnemonicParsing="false" onMouseClicked="#uploadPicture" style="-fx-background-color: #73a5c6; -fx-cursor: hand;" text="Upload Picture" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="addProductButton" layoutX="344.0" layoutY="482.0" mnemonicParsing="false" onMouseClicked="#addProduct" style="-fx-background-color: #00c301; -fx-cursor: hand;" text="Add New Product" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <MenuButton fx:id="categoryField" alignment="TOP_LEFT" layoutX="344.0" layoutY="277.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Categories" textFill="#1f055b">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Electronics" />
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Groceries" />
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Home &amp; Kitchen" />
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Style &amp; Fashion" />
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Art &amp; Book" />
+            <MenuItem mnemonicParsing="false" onAction="#selectProductCategory" text="Others" />
+         </items>
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </MenuButton>
+      <TextField fx:id="stockField" layoutX="344.0" layoutY="226.0" prefHeight="30.0" prefWidth="150.0" promptText="Stock Amount">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="priceField" layoutX="380.0" layoutY="169.0" prefHeight="30.0" prefWidth="150.0" promptText="Product Price">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </TextField>
+      <TextArea fx:id="nameField" layoutX="344.0" layoutY="96.0" prefHeight="42.0" prefWidth="400.0" promptText="Product Name">
+         <font>
+            <Font name="Dubai Regular" size="16.0" />
+         </font>
+      </TextArea>
+      <BorderPane fx:id="imagePane" layoutX="36.0" layoutY="96.0" prefHeight="260.0" prefWidth="260.0" style="-fx-border-color: #000000;">
+         <center>
+            <ImageView fx:id="imageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+      <Label fx:id="invalidLabel" layoutX="344.0" layoutY="460.0" style="visibility: false;" text="Please fill up all the information!" textFill="#fa0000" />
+      <Button fx:id="deleteButton" layoutX="99.0" layoutY="489.0" mnemonicParsing="false" onMouseClicked="#deleteProduct" prefHeight="37.0" prefWidth="133.0" style="-fx-background-color: #ed2939; -fx-cursor: hand;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="updateButton" layoutX="99.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#updateProduct" prefHeight="37.0" prefWidth="133.0" style="-fx-background-color: #2234a8; -fx-cursor: hand;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
