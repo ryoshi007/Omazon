@@ -1,4 +1,0 @@
-username;mohan2334
-email;mh223344@hotmail.com
-password;2233445566
-address;No.36 A Tingkat 1 Jalan Kemuning Taman Sri Plentong Plentong Johor 81750 Malaysia Johor 81750 Malay

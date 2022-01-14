@@ -1,4 +1,0 @@
-username;daniel39940
-email;daniel39940@gmail.com
-password;daniel39940
-address;Kolej Kediaman Ketujuh (Za’ba), Universiti Malaya, Lembah Pantai, 50603 Kuala Lumpur. 
