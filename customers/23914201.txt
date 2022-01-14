@@ -1,5 +1,0 @@
-Username;james
-Email;jay@gmail.com
-Password;jay
-Address;Kolej Kediaman Kinabalu University Malaya Wilayah Persekutuan, 50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
-ID;23914201
