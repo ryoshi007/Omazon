@@ -144,4 +144,20 @@ public class ReviewDatabase {
             ex.printStackTrace();
         }
     }
+    
+    public void updateDate (String idproduct, String idowner){
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            Date date = new Date();
+            java.sql.Date sql1;date = new java.sql.Timestamp(date.getTime());
+            String sql = "UPDATE review SET datetime ='"+ date + "' WHERE idproduct='" + idproduct +"' AND idowner='" + idowner + "'";
+           
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 }
