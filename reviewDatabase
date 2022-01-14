@@ -72,9 +72,11 @@ public class ReviewDatabase {
                 String review = result.getString(3);
                 double rate = result.getDouble(4);
                 String ownerreply = result.getString(5);
+                Date datetime = result.getTimestamp(6);
                 System.out.println("Product ID: " + idproduct 
                 + "\nOwner ID: " + idowner + "\nReview: " + review 
-                + "\nRate: " + rate + "\nOwner Reply: " + ownerreply );
+                + "\nRate: " + rate + "\nOwner Reply: " + ownerreply +
+                       "\nDate Time: " + datetime );
             }
             connection.close();
         }catch(SQLException ex){
