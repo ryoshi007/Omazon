@@ -99,4 +99,3 @@ public class User {
                 "\nAddress: " + this.address;
     }
 }
- 
