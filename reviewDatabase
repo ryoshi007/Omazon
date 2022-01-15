@@ -180,5 +180,5 @@ public class ReviewDatabase {
             ex.printStackTrace();
         }
         return output;
-    }
+        }
 }
