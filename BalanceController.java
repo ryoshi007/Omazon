@@ -2,10 +2,7 @@ package omazon;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -23,7 +19,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -272,7 +267,7 @@ public class BalanceController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Balance.fxml"));
             AnchorPane anchorPane = loader.load();
             BalanceController controller = loader.getController();
-            controller.checkEnoughBalance();
+            controller.setPrice(payPrice);
             Stage window = (Stage)proceedButton.getScene().getWindow();
             window.setScene(new Scene(anchorPane));      
         }
