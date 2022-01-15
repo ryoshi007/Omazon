@@ -162,4 +162,23 @@ public class ReviewDatabase {
             ex.printStackTrace();
         }
     }
+    
+    public double calculateSum(String idproduct){
+        double output =0.0;
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            
+            String sql = "SELECT SUM(payamount) FROM review WHERE idproduct='" + idproduct +"'";
+           
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            while(result.next()){
+                output += result.getDouble(1);
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return output;
+    }
 }
