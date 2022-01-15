@@ -228,6 +228,10 @@ public class CustomerDatabase {
                     output = result.getString(8);
                 } else if (columnName.equalsIgnoreCase("Address")) {
                     output = result.getString(5);
+                } else if (columnName.equalsIgnoreCase("Email")) {
+                    output = result.getString(3);
+                } else if (columnName.equalsIgnoreCase("Favourite")) {
+                    output = result.getString(9);
                 }
             }
             connection.close();
@@ -251,6 +255,8 @@ public class CustomerDatabase {
             while(result.next()){
                 if(input.equalsIgnoreCase("Username")){
                     value.add(result.getString(2));                   
+                } else if (input.equalsIgnoreCase("idCustomer")) {
+                    value.add(result.getString(1));
                 }
             }
             connection.close();
