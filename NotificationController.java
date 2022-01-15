@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,9 +27,9 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class NotificationController implements Initializable {
-    ReviewDatabase reviewDatabase = new ReviewDatabase();
-    CustomerDatabase customerDatabase = new CustomerDatabase();
-    ProductDatabase productDatabase = new ProductDatabase();
+    private ReviewDatabase reviewDatabase = new ReviewDatabase();
+    private CustomerDatabase customerDatabase = new CustomerDatabase();
+    private ProductDatabase productDatabase = new ProductDatabase();
     
     UserHolder holder = UserHolder.getInstance();
     User user = holder.getUser();
@@ -52,6 +53,7 @@ public class NotificationController implements Initializable {
             String address = "Address: " + customerDatabase.retrieveUserData(Integer.parseInt(current.getCustomerID()), "Address");
             String productName = "Product: " + productDatabase.retrieveSpecificProductInfo(current.getProductID(), "productName");
             String orderedAmount = "Amount: " + current.getAmount();
+            String orderTime = "Order Time: " + current.getCurrentDate();
             
             GridPane pane = new GridPane();
             pane.setMinWidth(550);
@@ -66,8 +68,8 @@ public class NotificationController implements Initializable {
             Label addressLabel = createLabel(address);
             Label productNameLabel = createLabel(productName);
             Label orderedAmountLabel = createLabel(orderedAmount);
+            Label timeStamp = createLabel(orderTime);
             Label empty = createLabel("");
-            
             Button fullfillButton = createFullfillButton();
             fullfillButton.setUserData(current.getIndex());
             
@@ -77,7 +79,8 @@ public class NotificationController implements Initializable {
             pane.add(productNameLabel, 0, 3);
             pane.add(orderedAmountLabel, 0, 4);
             pane.add(fullfillButton, 1, 0);
-            pane.add(empty, 0, 5);
+            pane.add(timeStamp, 0, 5);
+            pane.add(empty, 0, 6);
             
             Line straightLine = new Line();
             straightLine.setStartX(-100);
@@ -104,8 +107,12 @@ public class NotificationController implements Initializable {
         return label;
     }
     
-    private void fullfillOrder(int index) {
-        System.out.println(index);
+    private void fullfillOrder(int index) throws IOException {
+        reviewDatabase.updateFullfill(index);
+        
+        Parent loader = FXMLLoader.load(getClass().getResource("Notification.fxml"));
+        Stage window = (Stage)notificationPane.getScene().getWindow();
+        window.setScene(new Scene(loader));
     }
     
     private Button createFullfillButton() {
@@ -120,7 +127,11 @@ public class NotificationController implements Initializable {
         
         fullfillButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             int index = (int) fullfillButton.getUserData();
-            fullfillOrder(index);
+            try {
+                fullfillOrder(index);
+            } catch (IOException ex) {
+                Logger.getLogger(NotificationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         return fullfillButton;
     }
