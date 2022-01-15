@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -22,9 +23,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -151,9 +149,7 @@ public class AddProductController implements Initializable {
                 User user = holder.getUser();
                 database.createProduct(productID, productName, productPrice, productStock, 0, category, Integer.parseInt(user.getID()), 0, description, imageURL);
                 
-                Parent loader = FXMLLoader.load(getClass().getResource("Store.fxml"));
-                Stage window = (Stage)addProductButton.getScene().getWindow();
-                window.setScene(new Scene(loader));
+                goToStore();
             }
         } else {
             invalidLabel.setVisible(true);
@@ -273,12 +269,45 @@ public class AddProductController implements Initializable {
     private void deleteProduct() throws IOException {
         ProductHolder productHolder = ProductHolder.getInstance();
         Product product = productHolder.getProduct();
+        
+        String productID = product.getProductID() + ",";
+        CustomerDatabase customerDatabase = new CustomerDatabase();
+        ArrayList<String> customerIDList = customerDatabase.retrieveSpecificColumn("idCustomer");
+        for (String customer: customerIDList) {
+            int customerID = Integer.parseInt(customer);
+            String favourite = customerDatabase.retrieveUserData(customerID, "Favourite");
+            if (favourite == null) {}
+            else if (favourite.contains(product.getProductID() + ",")) {
+                favourite = favourite.replace(productID, "");
+                customerDatabase.update("favourite", favourite, customer);
+            }
+            
+            String order = customerDatabase.retrieveUserData(customerID, "OrderHistory");
+            if (order == null) {}
+            else if (order.contains(product.getProductID() + ",")) {
+                order = order.replace(productID, "");
+                customerDatabase.update("OrderHistory", order, customer);
+            }
+            
+            String cartItem = customerDatabase.retrieveUserData(customerID, "CartItem");
+            if (cartItem == null) {}
+            else if (cartItem.contains(product.getProductID() + ",")) {
+                String[] item = cartItem.split(";");
+                String newItem = "";
+                for (String productInfo: item) {
+                    if (productInfo.contains(product.getProductID() + ",")) {
+                        productInfo = "";
+                    } else {
+                        newItem += product + ";";
+                    }
+                }
+                customerDatabase.update("CartItem", newItem, customer);
+            }
+        }
         ProductDatabase database = new ProductDatabase();
         database.delete(String.valueOf(product.getProductID()));
         
-        Parent loader = FXMLLoader.load(getClass().getResource("Store.fxml"));
-        Stage window = (Stage)deleteButton.getScene().getWindow();
-        window.setScene(new Scene(loader));
+        goToStore();
     }
 
     @FXML
@@ -305,9 +334,7 @@ public class AddProductController implements Initializable {
         database.update("description", description, String.valueOf(productID));
         database.update("imagePath", imageURL, String.valueOf(productID));
         
-        Parent loader = FXMLLoader.load(getClass().getResource("Store.fxml"));
-        Stage window = (Stage)updateButton.getScene().getWindow();
-        window.setScene(new Scene(loader));
+        goToStore();
     }
     
 }
