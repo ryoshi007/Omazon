@@ -33,6 +33,7 @@ public class SearchPageController implements Initializable {
     private ProductDatabase productDatabase = new ProductDatabase();
     private CustomerDatabase customerDatabase = new CustomerDatabase();
     private UserHolder holder = UserHolder.getInstance();
+    private boolean containResult = false;
 
     @FXML private Pane favourite;
     @FXML private Pane cart;
@@ -65,14 +66,15 @@ public class SearchPageController implements Initializable {
             }
         }
         
+        if (productNameList.size() > 0) {
+            containResult = true;
+        }
+        
         ArrayList<Product> relatedProduct = new ArrayList<>();
         for (String name: results) {
             relatedProduct.add(productDatabase.retrieveSpecificProduct(name, "productName"));
         }
-        
-        if (relatedProduct.size() == 0) {
-            noResultText.setVisible(true);
-        }
+
         createProductPane(relatedProduct, "name", input);
         showSellerStore(input);
     }
@@ -96,10 +98,8 @@ public class SearchPageController implements Initializable {
             }
         }
         
-        if (relatedSeller.size() == 0) {
-            noResultText.setVisible(true);
-        } else {
-            noResultText.setVisible(false);
+        if (relatedSeller.size() > 0) {
+            containResult = true;
         }
         
         for(int i = 0; i < relatedSeller.size(); i++) {
@@ -142,6 +142,11 @@ public class SearchPageController implements Initializable {
             container.getChildren().add(sellerStoreLayout);
         }
         
+        showResultLabel();
+    }
+    
+    private void showResultLabel() {
+        noResultText.setVisible(!containResult);
     }
     
     public void createProductPane(ArrayList<Product> relatedProduct, String type, String searchInput) {
