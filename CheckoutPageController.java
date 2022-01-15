@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.mail.MessagingException;
 
 public class CheckoutPageController implements Initializable {
     private UserHolder holder = UserHolder.getInstance();
@@ -52,7 +53,7 @@ public class CheckoutPageController implements Initializable {
     }    
 
     @FXML
-    private void proceedPayment() throws IOException {
+    private void proceedPayment() throws IOException, MessagingException {
         invalidText.setVisible(false);
         if (!nameField.getText().isBlank() && !telephoneField.getText().isBlank()
                 && !addressField.getText().isBlank() && (user.getPaymentPassword().equals(paymentPasswordField.getText()))) {
@@ -85,7 +86,7 @@ public class CheckoutPageController implements Initializable {
         window.setScene(new Scene(anchorPane)); 
     }
     
-    private void paymentSuccessful() {
+    private void paymentSuccessful() throws MessagingException {
         CustomerDatabase customerDatabase = new CustomerDatabase();
         ProductDatabase productDatabase = new ProductDatabase();
         ReviewDatabase reviewDatabase = new ReviewDatabase();
@@ -111,21 +112,35 @@ public class CheckoutPageController implements Initializable {
                 String latestHistory = productID + ",";
                 user.setOrder(latestHistory);
                 customerDatabase.update("OrderHistory", latestHistory, user.getID());
-                reviewDatabase.createData(productID, productOwnerID, user.getID());
             } else if (!orderHistory.contains(productID)) {
                 String latestHistory = orderHistory + productID + ",";
                 user.setOrder(latestHistory);
                 customerDatabase.update("OrderHistory", latestHistory, user.getID());
-                reviewDatabase.createData(productID, productOwnerID, user.getID());
             }
-        }
-              
+            
+            int currentIndex = reviewDatabase.retrieveIndex();
+            double price = Double.valueOf(productDatabase.retrieveSpecificProductInfo(productID, "price"));
+            double totalItemPrice = price * Integer.parseInt(purchaseAmount);
+            reviewDatabase.createData(productID, productOwnerID, user.getID(), Integer.valueOf(purchaseAmount), currentIndex + 1, totalItemPrice);
+            reviewDatabase.updateDate(currentIndex + 1);
+            
+            Product currentProduct = productDatabase.retrieveSpecificProduct(productID, "idproduct");
+            Email emailer = new Email();
+            String content = emailer.prepareBuyerContent(currentProduct.getName(), purchaseAmount, totalItemPrice);
+            emailer.sendEmail(user.getEmail(), content);
+            
+            String sellerEmail = customerDatabase.retrieveUserData(Integer.parseInt(productOwnerID), "Email");
+            String sellerContent = emailer.prepareSellerContent(currentProduct.getName(), purchaseAmount, totalItemPrice, user.getUsername(), user.getAddress());
+            emailer.sendEmail(sellerEmail, sellerContent);
+        }    
+        
         customerDatabase.update("CartItem", "", user.getID());
         String balance = customerDatabase.retrieveUserData(Integer.parseInt(user.getID()), "Balance");
         double latestBalance = Double.valueOf(balance) - payPrice;
         latestBalance = (double) Math.round(latestBalance * 100) / 100;
         user.setBalance(latestBalance);
-        customerDatabase.update("Balance", String.valueOf(latestBalance), user.getID());
+        customerDatabase.update("Balance", String.valueOf(latestBalance), user.getID());     
+
     }
     
 }
