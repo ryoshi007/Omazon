@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -150,7 +149,7 @@ public class ProductPageController implements Initializable {
                     isFavourited = true;
                 }
             }
-        }
+        } else if (user.getFavourite() == null) {};
         
         if (isFavourited) {
             addToFavouriteButton.setText("Unfavourite");
@@ -200,7 +199,7 @@ public class ProductPageController implements Initializable {
     }
 
     @FXML
-    private void goToFavourite(MouseEvent event) throws IOException {
+    private void goToFavourite() throws IOException {
         userHolder.setFavouriteOrderPane("Favourite");
         Parent loader = FXMLLoader.load(getClass().getResource("Favourite.fxml"));
         Stage window = (Stage)favourite.getScene().getWindow();
@@ -208,28 +207,28 @@ public class ProductPageController implements Initializable {
     }
 
     @FXML
-    private void goToCart(MouseEvent event) throws IOException {
+    private void goToCart() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("CartPage.fxml"));
         Stage window = (Stage)cart.getScene().getWindow();
         window.setScene(new Scene(loader));
     }
 
     @FXML
-    private void goToLoginPage(MouseEvent event) throws IOException {
+    private void goToLoginPage() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
         Stage window = (Stage)LogOut.getScene().getWindow();
         window.setScene(new Scene(loader));
     }
 
     @FXML
-    private void goToSettingsPage(MouseEvent event) throws IOException {
+    private void goToSettingsPage() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("SettingPage.fxml"));
         Stage window = (Stage)Settings.getScene().getWindow();
         window.setScene(new Scene(loader));
     }
 
     @FXML
-    private void goToHistory(MouseEvent event) throws IOException {
+    private void goToHistory() throws IOException {
         userHolder.setFavouriteOrderPane("Order");
         Parent loader = FXMLLoader.load(getClass().getResource("Favourite.fxml"));
         Stage window = (Stage)history.getScene().getWindow();
@@ -237,7 +236,7 @@ public class ProductPageController implements Initializable {
     }
 
     @FXML
-    private void goToHomepage(MouseEvent event) throws IOException {
+    private void goToHomepage() throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("Homepage.fxml"));
         Stage window = (Stage)homepage.getScene().getWindow();
         window.setScene(new Scene(loader));
@@ -246,7 +245,11 @@ public class ProductPageController implements Initializable {
     private void addToFavourite() throws IOException {
         CustomerDatabase database = new CustomerDatabase();
         String input = product.getProductID() + ",";
-        user.setFavourite(user.getFavourite() + input);
+        if (user.getFavourite() == null) {
+            user.setFavourite(input);
+        } else {
+            user.setFavourite(user.getFavourite() + input);
+        }
         database.concatData(input, "favourite", user.getID());
         
         Parent loader = FXMLLoader.load(getClass().getResource("ProductPage.fxml"));
@@ -255,7 +258,7 @@ public class ProductPageController implements Initializable {
     }
 
     @FXML
-    private void addToCart(MouseEvent event) {
+    private void addToCart() {
         invalidAmount.setVisible(false);
         if (purchaseAmount.getText().isBlank() || (Integer.parseInt(purchaseAmount.getText()) > product.getStock())) {
             invalidAmount.setVisible(true);
@@ -272,7 +275,7 @@ public class ProductPageController implements Initializable {
     }
 
     @FXML
-    private void buyNow(MouseEvent event) throws IOException {
+    private void buyNow() throws IOException {
         invalidAmount.setVisible(false);
 
         if (purchaseAmount.getText().isBlank() || !isValidInteger(purchaseAmount.getText(), 10)) {
