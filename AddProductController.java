@@ -49,7 +49,6 @@ public class AddProductController implements Initializable {
     @FXML private TextField stockField;
     @FXML private TextArea descriptionField;
     @FXML private Button addProductButton;
-    @FXML private Button uploadButton;
     @FXML private Label invalidLabel;
     @FXML private MenuButton categoryField;
     @FXML private Pane store;
