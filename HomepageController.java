@@ -5,10 +5,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static java.util.stream.Collectors.toMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,17 +69,20 @@ public class HomepageController implements Initializable {
         for (int i = 0; i < salesVolume.size(); i++) {
             categorised.put(Integer.parseInt(salesVolume.get(i)), Integer.parseInt(productID.get(i)));
         }
-        List<Integer> salesKey = new ArrayList<>(categorised.keySet());
-        Collections.sort(salesKey);
-        int count = 0;
-        while (salesKey.size() > 3) {
-            salesKey.remove(count);
-            count++;
+        
+        Map<Integer, Integer> sortedList = categorised.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByKey()))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+        
+        Set<Integer> sales = sortedList.keySet();
+        ArrayList<Integer> salesList = new ArrayList<Integer>(sales);
+        
+        for (int i = salesList.size() - 1; salesList.size() > 3; i--) {
+            salesList.remove(i);
         }
         
         ArrayList<Product> productList = new ArrayList<>();
-        for (int i = 0; i < salesKey.size(); i++) {
-            String keyInString = String.valueOf(categorised.get(salesKey.get(i)));
+        for (int i = salesList.size() - 1; i >= 0; i--) {
+            String keyInString = String.valueOf(categorised.get(salesList.get(i)));
             Product product = database.retrieveSpecificProduct(keyInString, "idproduct");
             productList.add(product);
         }
