@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReviewDatabase {
     private String jdbcURL = "jdbc:mysql://localhost:3306/omazondb";
@@ -14,19 +15,22 @@ public class ReviewDatabase {
     private String password = "Yjsh2027";
     
     //Insert data to database
-    public void createData(String idProduct, String idOwner, String idCustomer) {
+    public void createData(String idProduct, String idOwner, String idCustomer, int orderedAmount, int index, double payAmount) {
 
         try{
             Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
             
-            String sql = "INSERT INTO review (idproduct,idowner,idcustomer,fullfill)"
-                    + " VALUES (?,?,?,?)";
+            String sql = "INSERT INTO review (idproduct,idowner,idcustomer,id,orderamount,fullfill,payamount)"
+                    + " VALUES (?,?,?,?,?,?,?)";
             
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,idProduct);
             statement.setString(2,idOwner);
             statement.setString(3,idCustomer);
-            statement.setBoolean(9, false);
+            statement.setInt(4, index);
+            statement.setInt(5, orderedAmount);
+            statement.setBoolean(6, false);
+            statement.setDouble(7, payAmount);
             statement.executeUpdate();
             connection.close();
         }catch(SQLException ex){
@@ -35,7 +39,7 @@ public class ReviewDatabase {
     }
     
     //Update data in database
-    public void update (String columnName, String input, String idproduct, String idcustomer) {
+    public void update(String columnName, String input, String idproduct, String idcustomer) {
         try{
             Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
                 
@@ -48,62 +52,6 @@ public class ReviewDatabase {
         }catch(SQLException ex){
             ex.printStackTrace();
         }
-    }
-    
-    //Retrieve data from review database
-    public void retrieve(String idproducts){
-        try{
-            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
-            
-            String sql = "SELECT * FROM review WHERE idproduct ='" + idproducts + "'";
-            
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            
-            while(result.next()){
-                String idproduct = result.getString(1);
-                String idowner = result.getString(2);
-                String review = result.getString(3);
-                double rate = result.getDouble(4);
-                String ownerreply = result.getString(5);
-            }
-            connection.close();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    //Retrieve specific item from database
-    public String retrieveSpecific(String idproduct, String input){
-        String output = "";
-        try{
-            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
-            
-            String sql = "SELECT * FROM review WHERE idproduct ='" + idproduct + "'";
-            
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            
-            while(result.next()){
-                if(input.equalsIgnoreCase("idproduct")){
-                    output = result.getString(1);
-                }else if(input.equalsIgnoreCase("idowner")){
-                    output = result.getString(2);
-                }else if(input.equalsIgnoreCase("idcustomer")){
-                    output = result.getString(3);
-                }else if(input.equalsIgnoreCase("review")){
-                    output = result.getString(4);
-                }else if(input.equalsIgnoreCase("ownerreply")){
-                    output = result.getString(5);
-                }else if(input.equalsIgnoreCase("rate")){
-                    output = result.getString(6);
-                }
-            }
-            connection.close();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return output;
     }    
     
     //Delete record from review database
@@ -186,7 +134,7 @@ public class ReviewDatabase {
         return null;
     }
     
-    public void updateNull (String columnName, String idproduct, String idcustomer) {
+    public void updateNull(String columnName, String idproduct, String idcustomer) {
         try{
             Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
 
@@ -216,8 +164,10 @@ public class ReviewDatabase {
                 String idcustomer = result.getString(3);
                 int orderAmount = result.getInt(8);
                 int index = result.getInt(7);
+                Date datetime = result.getTimestamp(10);
+                double payAmount = result.getDouble(11);
                 
-                Notification newNotification = new Notification(idproduct, idcustomer, orderAmount, index);
+                Notification newNotification = new Notification(idproduct, idcustomer, orderAmount, index, datetime, payAmount);
                 notificationList.add(newNotification);
             }
             connection.close();
@@ -242,8 +192,10 @@ public class ReviewDatabase {
                 String idcustomer = result.getString(3);
                 int orderAmount = result.getInt(8);
                 int index = result.getInt(7);
+                Date datetime = result.getTimestamp(10);
+                double payAmount = result.getDouble(11);
                 
-                Notification newNotification = new Notification(idproduct, idcustomer, orderAmount, index);
+                Notification newNotification = new Notification(idproduct, idcustomer, orderAmount, index, datetime, payAmount);
                 notificationList.add(newNotification);
             }
             connection.close();
@@ -252,4 +204,76 @@ public class ReviewDatabase {
         }
         return notificationList;
     }
+    
+    public void updateDate(int index) {
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            Date date = new Date();
+            java.sql.Date sql1;date = new java.sql.Timestamp(date.getTime());
+            String sql = "UPDATE review SET ordertime ='"+ date + "' WHERE id='" + index + "'";
+           
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void updateFullfill(int index) {
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            String sql = "UPDATE review SET fullfill = '1' WHERE id='" + index + "'";
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public int retrieveIndex() {
+        int index = 1;
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);
+            
+            String sql = "SELECT * FROM review";
+            
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            
+            while(result.next()){
+                int currentIndex = result.getInt(7);
+                if (currentIndex > index) {
+                    index = currentIndex;
+                }
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return index;
+    }
+    
+    public double calculateSum(int idproduct){
+        double output =0.0;
+        try{
+            Connection connection = DriverManager.getConnection(this.jdbcURL,this.username,this.password);
+            
+            String sql = "SELECT SUM(payamount) FROM review WHERE idproduct='" + idproduct +"'";
+           
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            while(result.next()){
+                output += result.getDouble(1);
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return output;
+    }
+
 }
