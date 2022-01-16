@@ -127,11 +127,11 @@ public class CheckoutPageController implements Initializable {
             Product currentProduct = productDatabase.retrieveSpecificProduct(productID, "idproduct");
             Email emailer = new Email();
             String content = emailer.prepareBuyerContent(currentProduct.getName(), purchaseAmount, totalItemPrice);
-            emailer.sendEmail(user.getEmail(), content);
+            emailer.sendEmail(user.getEmail(), content, currentProduct.getImagePath());
             
             String sellerEmail = customerDatabase.retrieveUserData(Integer.parseInt(productOwnerID), "Email");
             String sellerContent = emailer.prepareSellerContent(currentProduct.getName(), purchaseAmount, totalItemPrice, user.getUsername(), user.getAddress());
-            emailer.sendEmail(sellerEmail, sellerContent);
+            emailer.sendEmail(sellerEmail, sellerContent, currentProduct.getImagePath());
         }    
         
         customerDatabase.update("CartItem", "", user.getID());
