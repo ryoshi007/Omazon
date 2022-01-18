@@ -449,7 +449,6 @@ public class ProductPageController implements Initializable {
             }
         }
         
-        System.out.println("Here");
         for (int i = 0; i < uniqueIndex.size(); i++) {
             int currentIndex = uniqueIndex.get(i);
             String customerID = uniqueCustomerID.get(i);            
@@ -459,7 +458,6 @@ public class ProductPageController implements Initializable {
             
             //is seller himself
             if (user.getID().equals(String.valueOf(product.getOwnerID()))) {
-                System.out.println("seller");
                 if (reviewDatabase.retrieveSpecificWithIndex(currentIndex, "review") == null) {
                 } else {
                     GridPane reviewBox = prepareReviewBox();                   
@@ -488,7 +486,6 @@ public class ProductPageController implements Initializable {
                 }
             //Normal customer
             }else if (!user.getID().equals(uniqueCustomerID.get(i))) {
-                System.out.println("Normal");
                 if (currentReview == null) {
                 } else {
                     GridPane reviewBox = prepareReviewBox();
@@ -505,7 +502,6 @@ public class ProductPageController implements Initializable {
                 }
             // If is the buyer himself
             } else if (user.getID().equals(uniqueCustomerID.get(i))) {
-                System.out.println("is Buyer");
                 GridPane reviewBox = prepareReviewBox();
                 if (currentReview == null) {
                     Button commentButton = createCommentButton();
