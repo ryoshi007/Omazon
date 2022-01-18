@@ -1,6 +1,6 @@
-# Omazon
-WIX1002 Fundamentals of Programming (University of Malaya)
-Group Assignment from Tutorial 1 - Group 9
+# Omazon  
+WIX1002 Fundamentals of Programming (University of Malaya)  
+Group Assignment from Tutorial 1 - Group 9  
 
 |          Name          | Matric Number |
 | ---------------------- | ------------- |
