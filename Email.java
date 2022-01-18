@@ -59,9 +59,6 @@ public class Email {
            message.setContent(multipart);
 
            Transport.send(message);
-
-           System.out.println("Sent message successfully....");
-
         } catch (MessagingException e) {
            throw new RuntimeException(e);
         }
@@ -71,7 +68,10 @@ public class Email {
         String header = "<h1> Your order has been confirmed! </h1>";    
         String name = "<h2> Product Name - " + productName + "</h2>";
         String amount = "<h3> Purchase Amount - " + purchaseAmount + "</h3>";
-        String paid = "<h3> Total Price - RM " + purchasePrice + "</h3>";
+        
+        String priceInFormat = String.format("%.2f", purchasePrice);               
+        String paid = "<h3> Total Price - RM " + priceInFormat + "</h3>";
+        
         String ending = "<h5> Keep this email as a proof of purchase! </h5>";
         
         String content = header + "\n" + name + "\n" + amount + "\n" + paid + "\n" + ending;
@@ -82,7 +82,8 @@ public class Email {
         String header = "<h1> An order has been made! </h1>";
         String name = "<h2> Product Name - " + productName + "</h2>";
         String amount = "<h3> Purchase Amount - " + purchaseAmount + "</h3>";
-        String paid = "<h3> Total Price - RM " + purchasePrice + "</h3>";
+        String priceInFormat = String.format("%.2f", purchasePrice);               
+        String paid = "<h3> Total Price - RM " + priceInFormat + "</h3>";
         String info = "<h2> Buyer's Info </h2>";
         String buyer = "<h3> Buyer's name: " + buyerName + "</h3>";
         String address = "<h3> Buyer's address: " + buyerAddress + "</h3>"; 
