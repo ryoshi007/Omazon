@@ -121,6 +121,7 @@ public class CheckoutPageController implements Initializable {
             int currentIndex = reviewDatabase.retrieveIndex();
             double price = Double.valueOf(productDatabase.retrieveSpecificProductInfo(productID, "price"));
             double totalItemPrice = price * Integer.parseInt(purchaseAmount);
+            totalItemPrice = (double) Math.round(totalItemPrice * 100) / 100;
             reviewDatabase.createData(productID, productOwnerID, user.getID(), Integer.valueOf(purchaseAmount), currentIndex + 1, totalItemPrice);
             reviewDatabase.updateDate(currentIndex + 1);
             
