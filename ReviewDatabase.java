@@ -275,5 +275,55 @@ public class ReviewDatabase {
         }
         return output;
     }
+    
+    public ArrayList<Content> retrieveContent(int productID, String columnName) {
+        ArrayList<Content> output = new ArrayList<>();
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);            
+            String sql = "SELECT * FROM review WHERE idproduct ='" + productID + "'";
+           
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            while (result.next()) {
+                String item = "";
+                if (columnName.equalsIgnoreCase("idcustomer")) {
+                    item = result.getString(3);
+                } else if (columnName.equalsIgnoreCase("review")) {
+                    item = result.getString(4);
+                } else if (columnName.equalsIgnoreCase("ownerreply")) {
+                    item = result.getString(5);
+                } 
+                int index = result.getInt(7);
+                Content newContent = new Content(index, item);
+                output.add(newContent);
+            }
+            connection.close();
+            return output;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String retrieveSpecificWithIndex(int index, String columnName) {
+        try{
+            Connection connection = DriverManager.getConnection(jdbcURL,username,password);            
+            String sql = "SELECT * FROM review WHERE id ='" + index + "'";
+           
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            while (result.next()) {
+                if (columnName.equalsIgnoreCase("review")) {
+                    return result.getString(4);
+                } else if (columnName.equalsIgnoreCase("ownerreply")) {
+                    return result.getString(5);
+                }
+            }
+            connection.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
 }
