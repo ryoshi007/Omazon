@@ -134,7 +134,7 @@ public class ProductPageController implements Initializable {
         if (customerList == null) {            
         } else {
             try {
-                initializeReviewPane(customerList);
+                initializeReviewPane();
             } catch (IOException ex) {
                 Logger.getLogger(ProductPageController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -334,7 +334,7 @@ public class ProductPageController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Store.fxml"));
         AnchorPane anchorPane = loader.load();
         StoreController controller = loader.getController();
-        controller.displaOwnStore();
+        controller.displayOwnStore();
         Stage window = (Stage)store.getScene().getWindow();
         window.setScene(new Scene(anchorPane));
     }
@@ -428,31 +428,55 @@ public class ProductPageController implements Initializable {
 	}
     }
     
-    public void initializeReviewPane(ArrayList<String> customerList) throws IOException {
-        ArrayList<String> reviewList = reviewDatabase.retrieveSpecificColumn(product.getProductID(), "review");
-        ArrayList<String> replyList = reviewDatabase.retrieveSpecificColumn(product.getProductID(), "ownerreply");
-
+    public void initializeReviewPane() throws IOException {
+        ArrayList<Content> customerList = reviewDatabase.retrieveContent(product.getProductID(), "idcustomer");
+        
+        ArrayList<String> uniqueCustomerID = new ArrayList<>();
+        ArrayList<Integer> uniqueIndex = new ArrayList<>();
+        
         for (int i = 0; i < customerList.size(); i++) {
-            String customerName = customerDatabase.retrieveUserData(Integer.parseInt(customerList.get(i)), "Username");
-            String customerID = customerList.get(i);
+            boolean isExist = false;
+            Content currentCustomer = customerList.get(i);
+            for (int j = 0; j < uniqueCustomerID.size(); j++) {
+                int currentComparedID = Integer.valueOf(uniqueCustomerID.get(j));
+                if (Integer.valueOf(currentCustomer.getContent()) == currentComparedID) {
+                    isExist = true;
+                }
+            }
+            if (isExist == false) {
+                uniqueCustomerID.add(currentCustomer.getContent());
+                uniqueIndex.add(currentCustomer.getIndex());
+            }
+        }
+        
+        System.out.println("Here");
+        for (int i = 0; i < uniqueIndex.size(); i++) {
+            int currentIndex = uniqueIndex.get(i);
+            String customerID = uniqueCustomerID.get(i);            
+            String customerName = customerDatabase.retrieveUserData(Integer.parseInt(customerID), "Username");
+            String currentReview = reviewDatabase.retrieveSpecificWithIndex(currentIndex, "review");
+            String currentReply = reviewDatabase.retrieveSpecificWithIndex(currentIndex, "ownerreply");
+            
             //is seller himself
             if (user.getID().equals(String.valueOf(product.getOwnerID()))) {
-                if (reviewList.get(i) == null) {
+                System.out.println("seller");
+                if (reviewDatabase.retrieveSpecificWithIndex(currentIndex, "review") == null) {
                 } else {
-                    GridPane reviewBox = prepareReviewBox();
-                    Label review = new Label(customerName + ": " + reviewList.get(i));
+                    GridPane reviewBox = prepareReviewBox();                   
+                    
+                    Label review = new Label(customerName + ": " + currentReview);
                     review.setStyle(fontStyle);
                     reviewBox.add(review, 0, 0);
                     Button deleteButton = createDeleteButton();
                     deleteButton.setUserData(customerID);
                     reviewBox.add(deleteButton, 1, 0);
                     
-                    if (replyList.get(i) == null) {
+                    if (currentReply == null) {
                         Button replyButton = createReplyButton();
                         replyButton.setUserData(customerID);
                         reviewBox.add(replyButton, 1, 1);
                     } else {
-                        Label reply = new Label("Seller: " + replyList.get(i));
+                        Label reply = new Label("Seller: " + currentReply);
                         reply.setStyle(fontStyle);
                         reviewBox.add(reply, 0, 1);
                         Button editReplyButton = createEditReplyButton();
@@ -463,30 +487,32 @@ public class ProductPageController implements Initializable {
                     reviewPane.getChildren().add(reviewBox);
                 }
             //Normal customer
-            }else if (!user.getID().equals(customerList.get(i))) {
-                if (reviewList.get(i) == null) {
+            }else if (!user.getID().equals(uniqueCustomerID.get(i))) {
+                System.out.println("Normal");
+                if (currentReview == null) {
                 } else {
                     GridPane reviewBox = prepareReviewBox();
-                    Label review = new Label(customerName + ": " + reviewList.get(i));
+                    Label review = new Label(customerName + ": " + currentReview);
                     review.setStyle(fontStyle);
                     reviewBox.add(review, 0, 0);
-                    if (replyList.get(i) == null) {
+                    if (currentReply == null) {
                     } else {
-                        Label reply = new Label("Seller: " + replyList.get(i));
+                        Label reply = new Label("Seller: " + currentReply);
                         reply.setStyle(fontStyle);
                         reviewBox.add(reply, 0, 1);
                     }
                     reviewPane.getChildren().add(reviewBox);
                 }
             // If is the buyer himself
-            } else if (user.getID().equals(customerList.get(i))) {
+            } else if (user.getID().equals(uniqueCustomerID.get(i))) {
+                System.out.println("is Buyer");
                 GridPane reviewBox = prepareReviewBox();
-                if (reviewList.get(i) == null) {
+                if (currentReview == null) {
                     Button commentButton = createCommentButton();
                     commentButton.setUserData(customerID);
                     reviewBox.add(commentButton, 1, 0);
                 } else {
-                    Label review = new Label(customerName + ": " + reviewList.get(i));
+                    Label review = new Label(customerName + ": " + currentReview);
                     review.setStyle(fontStyle);
                     reviewBox.add(review, 0, 0);
                     Button editCommentButton = createEditCommentButton();
@@ -494,9 +520,9 @@ public class ProductPageController implements Initializable {
                     reviewBox.add(editCommentButton, 1, 0);
                 }
                 
-                if (replyList.get(i) == null) {
+                if (currentReply == null) {
                 } else {
-                    Label reply = new Label("Seller: " + replyList.get(i));
+                    Label reply = new Label("Seller: " + currentReply);
                     reply.setStyle(fontStyle);
                     reviewBox.add(reply, 0, 1);
                 }
